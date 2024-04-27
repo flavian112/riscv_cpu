@@ -69,4 +69,4 @@ $(BUILD_DIR)/testbench: $(SOURCES) $(TESTBENCH)
 $(BUILD_DIR)/testbench.vcd: $(BUILD_DIR)/testbench
 	cd $(BUILD_DIR); $(VVP) testbench
 
-.PHONY: all program clean
+.PHONY: all program flash simulate wave clean
