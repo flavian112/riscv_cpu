@@ -3,8 +3,10 @@ TOP_MODULE = top
 
 SRC_DIR = src
 CONSTRAINTS_DIR = constraints
+SIM_DIR = sim
 
 SOURCES = $(wildcard $(SRC_DIR)/*.v)
+TESTBENCH = $(SIM_DIR)/testbench.v
 CONSTRAINTS = $(CONSTRAINTS_DIR)/tangnano9k.cst
 
 BUILD_DIR = build
@@ -14,6 +16,9 @@ YOSYS = yosys
 NEXTPNR = nextpnr-gowin
 GOWIN_PACK = gowin_pack
 PROGRAMMER = openFPGALoader
+IVERILOG = iverilog
+VVP = vvp
+GTKWAVE = gtkwave
 
 FAMILY = GW1N-9C
 DEVICE = GW1NR-LV9QN88PC6/I5
@@ -49,8 +54,19 @@ program: $(BITSTREAM)
 flash: $(BITSTREAM)
 	$(PROGRAMMER) -b $(BOARD) -f $(BITSTREAM)
 
-
 clean:
 	rm -rf $(BUILD_DIR)
+
+simulate: $(BUILD_DIR)/testbench.vcd
+
+wave: $(BUILD_DIR)/testbench.vcd
+	$(GTKWAVE) $(BUILD_DIR)/testbench.vcd
+
+$(BUILD_DIR)/testbench: $(SOURCES) $(TESTBENCH)	
+	@mkdir -p $(BUILD_DIR)
+	$(IVERILOG) -o $(BUILD_DIR)/testbench $(SOURCES) $(TESTBENCH)
+
+$(BUILD_DIR)/testbench.vcd: $(BUILD_DIR)/testbench
+	cd $(BUILD_DIR); $(VVP) testbench
 
 .PHONY: all program clean

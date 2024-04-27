@@ -4,18 +4,15 @@ module top (
 	output [5:0] led
 );
 
-reg [25:0] ctr_q;
-wire [25:0] ctr_d;
+reg [5:0] ctr_q;
+wire [5:0] ctr_d;
 
-// Sequential code (flip-flop)
 always @(posedge clk) begin
-	if (key) begin
-		ctr_q <= ctr_d;
-	end
+	if (key) ctr_q <= ctr_d;
+	else ctr_q <= 6'b0;
 end
 
-// Combinational code (boolean logic)
-assign ctr_d = ctr_q + 1'b1;
-assign led = ctr_q[25:20];
+assign ctr_d = ctr_q + 6'b1;
+assign led = ctr_q;
 
 endmodule
