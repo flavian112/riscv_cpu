@@ -25,7 +25,7 @@ module testbench();
   reg [103:0] testvec [0:9999];
 
   initial begin
-    $readmemh("alu_testvec.txt", testvec);
+    $readmemh("../testvecs/alu_testvec.txt", testvec);
     error_count = 0;
     vector_count = 0;
   end
