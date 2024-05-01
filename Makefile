@@ -1,15 +1,20 @@
 PROJ_NAME = riscv_cpu
 TOP_MODULE = top
 
+BUILD_DIR = build
+
 SRC_DIR = src
 CONSTRAINTS_DIR = constraints
 SIM_DIR = sim
+GENTESTS_DIR = tests
 
 SOURCES = $(wildcard $(SRC_DIR)/*.v)
 TESTBENCH = $(SIM_DIR)/testbench.v
 CONSTRAINTS = $(CONSTRAINTS_DIR)/tangnano9k.cst
 
-BUILD_DIR = build
+GENTESTS_SOURCES = $(wildcard $(GENTESTS_DIR)/*.c)
+GENTESTS_BINARIES = $(patsubst $(GENTESTS_DIR)/%.c,$(BUILD_DIR)/%,$(GENTESTS_SOURCES))
+
 BITSTREAM = $(BUILD_DIR)/$(PROJ_NAME).fs
 
 YOSYS = yosys
@@ -19,6 +24,7 @@ PROGRAMMER = openFPGALoader
 IVERILOG = iverilog
 VVP = vvp
 GTKWAVE = gtkwave
+CC = clang
 
 FAMILY = GW1N-9C
 DEVICE = GW1NR-LV9QN88PC6/I5
@@ -57,6 +63,15 @@ flash: $(BITSTREAM)
 clean:
 	rm -rf $(BUILD_DIR)
 
+$(BUILD_DIR)/%: $(GENTESTS_DIR)/%.c
+	@mkdir -p $(BUILD_DIR)
+	$(CC) -o $@ $<
+
+tests: $(GENTESTS_BINARIES)
+	@for bin in $(GENTESTS_BINARIES); do \
+		./$$bin > $$bin.txt; \
+	done
+
 simulate: $(BUILD_DIR)/testbench.vcd
 
 wave: $(BUILD_DIR)/testbench.vcd
@@ -66,7 +81,7 @@ $(BUILD_DIR)/testbench: $(SOURCES) $(TESTBENCH)
 	@mkdir -p $(BUILD_DIR)
 	$(IVERILOG) -o $(BUILD_DIR)/testbench $(SOURCES) $(TESTBENCH)
 
-$(BUILD_DIR)/testbench.vcd: $(BUILD_DIR)/testbench
+$(BUILD_DIR)/testbench.vcd: $(BUILD_DIR)/testbench tests
 	cd $(BUILD_DIR); $(VVP) testbench
 
-.PHONY: all program flash simulate wave clean
+.PHONY: all program flash simulate wave clean tests
