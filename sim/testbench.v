@@ -21,31 +21,31 @@ module testbench();
 
   assign exp_zero = exp_flags[0];
 
-  reg [31:0]	vector_count, error_count;
-  reg [103:0] testvec [0:9999];
+  reg [31:0] alu_test_count, alu_error_count;
+  reg [103:0] alu_testvec [0:9999];
 
   initial begin
-    $readmemh("alu_testvec.txt", testvec);
-    error_count = 0;
-    vector_count = 0;
+    $readmemh("alu_testvec.txt", alu_testvec);
+    alu_test_count = 0;
+    alu_error_count = 0;
   end
   
   always @ (posedge clk) begin
     #16;
-    {op, a, b, exp_result, exp_flags} = testvec[vector_count];
+    {op, a, b, exp_result, exp_flags} = alu_testvec[alu_test_count];
     #32;
     if ((result !== exp_result) | (zero !== exp_zero)) begin
-      $display("Error at %5d ns: op %b a = %h b = %h", $time, op, a, b);
-      $display("       %h (expected %h)", result, exp_result);
-      $display(" zero: %b (expected %b)", zero, exp_zero);
-
-      error_count = error_count + 1;
+      $display("ERROR (ALU) time: %5d, test: %d", $time, alu_test_count);
+      $display("              op: %b, a: %h b: %h", op, a, b);
+      $display("          result: %h (expected %h)", result, exp_result);
+      $display("            zero: %b (expected %b)", zero, exp_zero);
+      alu_error_count = alu_error_count + 1;
     end
 
-    vector_count = vector_count + 1;
+    alu_test_count = alu_test_count + 1;
 
-    if ((vector_count == 9027)) begin
-      $display("%d tests completed with %d errors", vector_count, error_count);
+    if ((alu_test_count == 9027)) begin
+      $display("FINISHED (ALU), %d tests completed with %d errors", alu_test_count, alu_error_count);
       #16;
 
       $finish;
