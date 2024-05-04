@@ -1,58 +1,81 @@
-PROJ_NAME = riscv_cpu
+PRJ_NAME = riscv_cpu
 TOP_MODULE = top
 
+# Directories
+SRC_DIR = src
+SIM_DIR = sim
+GENTESTVEC_DIR = gentestvec
+CST_DIR = cst
 BUILD_DIR = build
 
-SRC_DIR = src
-CONSTRAINTS_DIR = constraints
-SIM_DIR = sim
-GENTESTS_DIR = tests
+# Source Files
+SRC_FILES = $(wildcard $(SRC_DIR)/*.v)
+SIM_FILES = $(wildcard $(SIM_DIR)/testbench_*.v)
+GENTESTVEC_FILES = $(wildcard $(GENTESTVEC_DIR)/gentestvec_*.c)
+CST_FILES = $(wildcard $(CST_DIR)/*.cst)
 
-SOURCES = $(wildcard $(SRC_DIR)/*.v)
-TESTBENCH = $(SIM_DIR)/testbench.v
-CONSTRAINTS = $(CONSTRAINTS_DIR)/tangnano9k.cst
+# Output Files
+SIM_EXECUTABLES = $(patsubst $(SIM_DIR)/testbench_%.v, $(BUILD_DIR)/testbench_%,$(SIM_FILES))
+GENTESTVEC_EXECUTABLES = $(patsubst $(GENTESTVEC_DIR)/gentestvec_%.c, $(BUILD_DIR)/gentestvec_%,$(GENTESTVEC_FILES))
+TESTVECTOR_FILES = $(patsubst $(BUILD_DIR)/gentestvec_%, $(BUILD_DIR)/testvec_%.txt, $(GENTESTVEC_EXECUTABLES))
+WAVEFORM_FILES = $(patsubst $(BUILD_DIR)/testbench_%, $(BUILD_DIR)/waveform_%.vcd, $(SIM_EXECUTABLES))
 
-GENTESTS_SOURCES = $(wildcard $(GENTESTS_DIR)/*.c)
-GENTESTS_BINARIES = $(patsubst $(GENTESTS_DIR)/%.c,$(BUILD_DIR)/%,$(GENTESTS_SOURCES))
+BITSTREAM = $(BUILD_DIR)/$(PRJ_NAME).fs
 
-BITSTREAM = $(BUILD_DIR)/$(PROJ_NAME).fs
+# Programs
+CC = clang
+CFLAGS = -O3
+
+IVERILOG = iverilog
+VVP = vvp
+GTKWAVE = gtkwave
 
 YOSYS = yosys
 NEXTPNR = nextpnr-gowin
 GOWIN_PACK = gowin_pack
 PROGRAMMER = openFPGALoader
-IVERILOG = iverilog
-VVP = vvp
-GTKWAVE = gtkwave
-CC = clang
 
 FAMILY = GW1N-9C
 DEVICE = GW1NR-LV9QN88PC6/I5
 BOARD = tangnano9k
 
-all: $(BITSTREAM)
+all: simulate
 
-$(BUILD_DIR)/$(PROJ_NAME).json: $(SOURCES)
-	@echo "=================================================="
-	@echo "Synthesizing"
-	@echo "=================================================="
-	
-	@mkdir -p $(BUILD_DIR)
-	$(YOSYS) -p "synth_gowin -top $(TOP_MODULE)" -o $(BUILD_DIR)/$(PROJ_NAME).json $(SOURCES)
-	
-$(BUILD_DIR)/$(PROJ_NAME)_pnr.json: $(BUILD_DIR)/$(PROJ_NAME).json $(CONSTRAINTS)
-	@echo "=================================================="
-	@echo "Routing"
-	@echo "=================================================="
 
-	$(NEXTPNR) --json $(BUILD_DIR)/$(PROJ_NAME).json --write $(BUILD_DIR)/$(PROJ_NAME)_pnr.json --device $(DEVICE) --family $(FAMILY) --cst $(CONSTRAINTS)
-
-$(BITSTREAM): $(BUILD_DIR)/$(PROJ_NAME)_pnr.json
+$(BUILD_DIR)/$(PRJ_NAME).json: $(SRC_FILES) | $(BUILD_DIR)
+	@echo
 	@echo "=================================================="
-	@echo "Generating Bitstream"
+	@echo " Synthesizing"
 	@echo "=================================================="
+	$(YOSYS) -p "synth_gowin -top $(TOP_MODULE)" -o $(BUILD_DIR)/$(PRJ_NAME).json $(SRC_FILES)
+	@echo "=================================================="
+	@echo " Completed Synthesis"
+	@echo "=================================================="
+	@echo
 
-	$(GOWIN_PACK) -d $(FAMILY) -o $(BITSTREAM) $(BUILD_DIR)/$(PROJ_NAME)_pnr.json
+$(BUILD_DIR)/$(PRJ_NAME)_pnr.json: $(BUILD_DIR)/$(PRJ_NAME).json $(CST_FILES)
+	@echo
+	@echo "==================================================="
+	@echo " Routing"
+	@echo "==================================================="
+	$(NEXTPNR) --json $(BUILD_DIR)/$(PRJ_NAME).json --write $(BUILD_DIR)/$(PRJ_NAME)_pnr.json --device $(DEVICE) --family $(FAMILY) --cst $(CST_FILES)
+	@echo "==================================================="
+	@echo " Completed Routing"	
+	@echo "==================================================="
+	@echo
+
+$(BITSTREAM): $(BUILD_DIR)/$(PRJ_NAME)_pnr.json
+	@echo
+	@echo "==================================================="
+	@echo " Generating Bitstream"
+	@echo "==================================================="
+	$(GOWIN_PACK) -d $(FAMILY) -o $(BITSTREAM) $(BUILD_DIR)/$(PRJ_NAME)_pnr.json
+	@echo "==================================================="
+	@echo " Generated Bitstream"
+	@echo "==================================================="
+	@echo
+
+bitstream: $(BITSTREAM)
 	
 program: $(BITSTREAM)
 	$(PROGRAMMER) -b $(BOARD) $(BITSTREAM)
@@ -60,28 +83,39 @@ program: $(BITSTREAM)
 flash: $(BITSTREAM)
 	$(PROGRAMMER) -b $(BOARD) -f $(BITSTREAM)
 
+simulate: $(WAVEFORM_FILES)
+
+# Build the testbench executables
+$(BUILD_DIR)/testbench_%: $(SIM_DIR)/testbench_%.v $(SRC_FILES) | $(BUILD_DIR)
+	$(IVERILOG) -o $@ $^
+
+# Build the test vector generator executables
+$(BUILD_DIR)/gentestvec_%: $(GENTESTVEC_DIR)/gentestvec_%.c | $(BUILD_DIR)
+	$(CC) $(CFLAGS) -o $@ $<
+
+# Generate the test vector files
+$(BUILD_DIR)/testvec_%.txt: $(BUILD_DIR)/gentestvec_%
+	$< > $@
+
+# Run the simulation and generate the waveform files
+$(BUILD_DIR)/waveform_%.vcd: $(BUILD_DIR)/testbench_% $(BUILD_DIR)/testvec_%.txt
+	@echo
+	@echo "==================================================="
+	@echo " Running Testbench ($*)"
+	@echo "==================================================="
+	$(VVP) $< +testvec=$(BUILD_DIR)/testvec_$*.txt +waveform=$@
+	@echo "==================================================="
+	@echo " Completed Testbench ($*)"
+	@echo "==================================================="
+	@echo
+
+# Create the build directory
+$(BUILD_DIR):
+	mkdir -p $(BUILD_DIR)
+
+# Clean
 clean:
 	rm -rf $(BUILD_DIR)
 
-$(BUILD_DIR)/%: $(GENTESTS_DIR)/%.c
-	@mkdir -p $(BUILD_DIR)
-	$(CC) -o $@ $<
+.PHONY: all simulate bitsream program flash clean
 
-tests: $(GENTESTS_BINARIES)
-	@for bin in $(GENTESTS_BINARIES); do \
-		./$$bin > $$bin.txt; \
-	done
-
-simulate: $(BUILD_DIR)/testbench.vcd
-
-wave: $(BUILD_DIR)/testbench.vcd
-	$(GTKWAVE) $(BUILD_DIR)/testbench.vcd
-
-$(BUILD_DIR)/testbench: $(SOURCES) $(TESTBENCH)	
-	@mkdir -p $(BUILD_DIR)
-	$(IVERILOG) -o $(BUILD_DIR)/testbench $(SOURCES) $(TESTBENCH)
-
-$(BUILD_DIR)/testbench.vcd: $(BUILD_DIR)/testbench tests
-	cd $(BUILD_DIR); $(VVP) testbench
-
-.PHONY: all program flash simulate wave clean tests

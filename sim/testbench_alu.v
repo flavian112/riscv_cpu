@@ -1,12 +1,31 @@
 `timescale 1ns / 1ps
 
-module testbench();
+module testbench_alu();
 
   reg reset = 0;
+
+  reg [1023:0] testvec_filename;
+  reg [1023:0] waveform_filename;
+
+  initial begin
+    if ($value$plusargs("testvec=%s", testvec_filename)) begin
+      $display("Using test vector file: %s", testvec_filename);
+    end else begin
+      $display("Error: no test vector file specified.");
+      $finish;
+    end
+
+    if ($value$plusargs("waveform=%s", waveform_filename)) begin
+      $display("Using waveform file: %s", waveform_filename);
+    end else begin
+      $display("Error: no waveform file specified.");
+      $finish;
+    end
+  end
   
   initial begin
-    $dumpfile("testbench.vcd");
-    $dumpvars(0,testbench);
+    $dumpfile(waveform_filename);
+    $dumpvars(0,testbench_alu);
   end
 
   reg clk = 0;
@@ -25,7 +44,8 @@ module testbench();
   reg [103:0] alu_testvec [0:9999];
 
   initial begin
-    $readmemh("alu_testvec.txt", alu_testvec);
+    #5;
+    $readmemh(testvec_filename, alu_testvec);
     alu_test_count = 0;
     alu_error_count = 0;
   end
