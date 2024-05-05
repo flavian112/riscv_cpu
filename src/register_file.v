@@ -3,9 +3,9 @@ module register_file #(
   parameter XLEN = 32
 )(
   input clk, rst, we,
-  input [log2(N)-1:0] addr_rs0, addr_rs1, addr_rd2,
-  input [N-1:0] data_rd2,
-  output reg [N-1:0] data_rs0, data_rs1
+  input [log2(XLEN)-1:0] addr_read0, addr_read1, addr_write2,
+  input [N-1:0] data_write2,
+  output reg [N-1:0] data_read0, data_read1
 );
 
 `include "include/log2.vh"
@@ -18,10 +18,10 @@ always @(posedge clk or rst) begin
     for (i = 1; i < XLEN; i = i + 1)
       registers[i] <= 0;
   end else begin
-    data_rs0 = (addr_rs0 == 0) ? 0 : registers[addr_rs0];
-    data_rs1 = (addr_rs1 == 0) ? 0 : registers[addr_rs1];
-    if (we && (addr_rd2 != 0)) begin
-      registers[addr_rd2] = data_rd2;
+    data_read0 = (addr_read0 == 0) ? 0 : registers[addr_read0];
+    data_read1 = (addr_read1 == 0) ? 0 : registers[addr_read1];
+    if (we && (addr_write2 != 0)) begin
+      registers[addr_write2] <= data_write2;
     end
   end
 end

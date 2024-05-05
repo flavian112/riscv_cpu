@@ -14,12 +14,12 @@ register_file uut (
   .clk(clk),
   .rst(rst),
   .we(we),
-  .addr_rs0(addr_rs0),
-  .addr_rs1(addr_rs1),
-  .addr_rd2(addr_rd2),
-  .data_rs0(data_rs0),
-  .data_rs1(data_rs1),
-  .data_rd2(data_rd2)
+  .addr_read0(addr_rs0),
+  .addr_read1(addr_rs1),
+  .addr_write2(addr_rd2),
+  .data_read0(data_rs0),
+  .data_read1(data_rs1),
+  .data_write2(data_rd2)
 );
 
 integer file, r, eof;
