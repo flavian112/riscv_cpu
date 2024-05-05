@@ -14,4 +14,5 @@ The board used in this project is a [Tang Nano 9K](https://wiki.sipeed.com/hardw
 * `make program` to upload the bitstream to the FPGA.
 * `make flash` to flash the bitsream to the FPGA.
 * `make clean` to clean build files.
+* `gtkwave build/waveform_*.vcd` to view waveform of corresponding testbench.
 
