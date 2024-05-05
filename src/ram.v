@@ -12,18 +12,18 @@ module ram #(
 
 `include "include/log2.vh"
 
-reg [8:0] ram_block [SIZE-1:0];
+reg [8:0] memory [SIZE-1:0];
 
 integer i;
 always @(posedge clk or posedge rst) begin
   if (rst) begin
     for (i = 0; i < SIZE; i = i + 1)
-      ram_block[i] <= 0;
+      memory[i] <= 0;
   end else begin
     if (we) begin
-      ram_block[addr] = data_write;
+      memory[addr] = data_write;
     end
-    data_read = ram_block[addr];      
+    data_read = memory[addr];
   end
 
 end

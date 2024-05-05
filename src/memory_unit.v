@@ -23,7 +23,6 @@ ram #(.N(N), .SIZE(1024)) ram(
 
 rom #(.N(N), .SIZE(1024)) rom(
   .clk(clk),
-  .rst(rst),
   .addr(addr[N-17:0]),
   .data_read(data_read_rom)
 );
