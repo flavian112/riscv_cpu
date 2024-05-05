@@ -76,11 +76,11 @@ module testbench_alu();
   
 
   alu #(.N(32)) alu (
-    .alu_src0(a),
-    .alu_src1(b),
-    .alu_op(op),
-    .alu_result(result),
-    .alu_zero(zero)
+    .src0(a),
+    .src1(b),
+    .op(op),
+    .result(result),
+    .zero(zero)
   );
 
 endmodule
