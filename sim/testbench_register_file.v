@@ -35,16 +35,14 @@ reg [1023:0] waveform_filename;
 
 initial begin
   if ($value$plusargs("testvec=%s", testvec_filename)) begin
-    $display("Using test vector file: %s", testvec_filename);
   end else begin
-    $display("Error: no test vector file specified.");
+    $display("ERROR: testvec not specified");
     $finish;
   end
 
   if ($value$plusargs("waveform=%s", waveform_filename)) begin
-    $display("Using waveform file: %s", waveform_filename);
   end else begin
-    $display("Error: no waveform file specified.");
+    $display("ERROR: waveform not specified");
     $finish;
   end
 end
@@ -73,7 +71,7 @@ initial begin
 
   file = $fopen(testvec_filename, "r");
   if (file == 0) begin
-    $display("Failed to open testvector file.");
+    $display("ERROR: failed to open testvec");
     $finish;
   end
 
@@ -87,7 +85,7 @@ initial begin
 
     @(negedge clk);
     if (data_rs0 !== expected_data_rs0 || data_rs1 !== expected_data_rs1) begin
-      $display("ERROR (register_file) in test %d: addr_rs0: %08h, addr_rs1: %08h, addr_rd2: %08h, data_rd2: %08h, we: %b",
+      $display("ERROR (register_file), test %d: addr_rs0: %08h, addr_rs1: %08h, addr_rd2: %08h, data_rd2: %08h, we: %b",
         test_count, addr_rs0, addr_rs1, addr_rd2, data_rd2, we);
       $display("      data_rs0: %08h (expected: %08h)", data_rs0, expected_data_rs0);
       $display("      data_rs1: %08h (expected: %08h)", data_rs1, expected_data_rs1);
@@ -95,7 +93,7 @@ initial begin
     end
     test_count = test_count + 1;
   end
-  $display("FINISHED with %d errors out of %d tests", error_count, test_count);
+  $display("FINISHED (register_file) with %d errors out of %d tests", error_count, test_count);
   $fclose(file);
   $finish;
 end

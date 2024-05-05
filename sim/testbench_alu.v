@@ -9,16 +9,14 @@ module testbench_alu();
 
   initial begin
     if ($value$plusargs("testvec=%s", testvec_filename)) begin
-      $display("Using test vector file: %s", testvec_filename);
     end else begin
-      $display("Error: no test vector file specified.");
+      $display("ERROR: testvec not specified");
       $finish;
     end
 
     if ($value$plusargs("waveform=%s", waveform_filename)) begin
-      $display("Using waveform file: %s", waveform_filename);
     end else begin
-      $display("Error: no waveform file specified.");
+      $display("ERROR: waveform not specified");
       $finish;
     end
   end
@@ -65,7 +63,7 @@ module testbench_alu();
     alu_test_count = alu_test_count + 1;
 
     if ((alu_test_count == 9027)) begin
-      $display("FINISHED (ALU), %d tests completed with %d errors", alu_test_count, alu_error_count);
+      $display("FINISHED (ALU), with %d errors out of %d tests.", alu_error_count, alu_test_count);
       #16;
 
       $finish;
