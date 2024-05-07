@@ -12,9 +12,27 @@ wire instr_we;
 wire rf_we;
 wire alu_zero;
 wire [3:0] alu_op;
-wire [1:0] alu_src_a;
-wire [1:0] alu_src_b;
+wire [1:0] alu_a_src;
+wire [1:0] alu_b_src;
 wire [1:0] result_src;
+
+control_unit cu (
+  .clk(clk),
+  .rst(rst),
+  .opcode(opcode),
+  .funct3(funct3),
+  .funct7(funct7),
+  .alu_zero(alu_zero),
+  .pc_we(pc_we),
+  .mem_addr_src(mem_addr_src),
+  .mem_we(mem_we),
+  .instr_we(instr_we),
+  .result_src(result_src),
+  .alu_op(alu_op),
+  .alu_a_src(alu_a_src),
+  .alu_b_src(alu_b_src),
+  .rf_we(rf_we)
+);
 
 // Fetch
 
@@ -113,7 +131,7 @@ reg [31:0] a, b;
 wire [31:0] alu_result;
 
 always @ (*) begin
-  case(alu_src_a)
+  case(alu_a_src)
     2'b00: a <= pc;
     2'b01: a <= pc_buf;
     2'b10: a <= a_buf;
@@ -122,7 +140,7 @@ always @ (*) begin
 end
 
 always @ (*) begin
-  case(alu_src_b)
+  case(alu_b_src)
     2'b00: b <= b_buf;
     2'b01: b <= immediate;
     2'b10: b <= 32'h4;
@@ -144,6 +162,8 @@ always @ (posedge clk or posedge rst) begin
   if (rst) result_buf <= 32'b0;
   else result_buf <= alu_result;
 end
+
+// Writeback
 
 reg [31:0] result;
 

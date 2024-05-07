@@ -3,16 +3,15 @@ module control_unit (
  input [6:0] opcode,
  input [2:0] funct3,
  input [6:0] funct7,
- input zero,
+ input alu_zero,
  output pc_we,
  output mem_addr_src,
  output mem_we,
  output instr_we,
  output [1:0] result_src,
  output [3:0] alu_op,
- output [1:0] alu_src0_src,
- output [1:0] alu_src1_src,
- output [1:0] imm_src,
+ output [1:0] alu_a_src,
+ output [1:0] alu_b_src,
  output rf_we
 );
 
