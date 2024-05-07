@@ -1,30 +1,28 @@
-module memory_unit #(
-  parameter N = 32
-)(
+module memory_unit (
   input clk,
   input rst,
   input we,
-  input [N-1:0] addr,
-  output reg [N-1:0] data_read,
-  input [N-1:0] data_write
+  input [31:0] addr,
+  output reg [31:0] read_data,
+  input [31:0] write_data
 );
 
-reg we_ram;
-wire [N-1:0] data_read_ram, data_read_rom;
+reg ram_we;
+wire [31:0] ram_read_data, rom_read_data;
 
-ram #(.N(N), .SIZE(1024)) ram(
+ram #(.N(32), .SIZE(1024)) ram(
   .clk(clk),
   .rst(rst),
   .we(we_ram),
-  .addr(addr[N-17:0]),
-  .data_read(data_read_ram),
-  .data_write(data_write)
+  .addr(addr),
+  .data_read(ram_read_data),
+  .data_write(write_data)
 );
 
-rom #(.N(N), .SIZE(1024)) rom(
+rom #(.N(32), .SIZE(1024)) rom(
   .clk(clk),
-  .addr(addr[N-17:0]),
-  .data_read(data_read_rom)
+  .addr(addr),
+  .data_read(rom_read_data)
 );
 
 // 0000 0000 Reserved
@@ -41,16 +39,16 @@ rom #(.N(N), .SIZE(1024)) rom(
 
 
 always @(*) begin
-  we_ram = 0;
-  if (addr[N-1:N-16] == 16'h0000) begin
-    data_read <= 0;
-  end else if (addr[N-1:N-16] >= 16'h0001 && addr[N-1:N-16] <= 16'h000F) begin
-    data_read <= data_read_rom;
-    we_ram = we;
-  end else if (addr[N-1:N-16] >= 16'h0010 && addr[N-1:N-16] <= 16'hFF0F) begin
-    data_read <= data_read_ram;
-  end else if (addr[N-1:N-16] >= 16'hFF10 && addr[N-1:N-16] <= 16'hFFFF) begin
-    data_read <= 0;
+  ram_we = 0;
+  if (addr[31:16] == 16'h0000) begin
+    read_data <= 0;
+  end else if (addr[31:16] >= 16'h0001 && addr[31:16] <= 16'h000F) begin
+    read_data <= rom_read_data;
+    ram_we = we;
+  end else if (addr[31:16] >= 16'h0010 && addr[31:16] <= 16'hFF0F) begin
+    read_data <= ram_read_data;
+  end else if (addr[31:16] >= 16'hFF10 && addr[31:16] <= 16'hFFFF) begin
+    read_data <= 0;
   end
 end
 

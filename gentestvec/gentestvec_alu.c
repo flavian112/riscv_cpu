@@ -6,7 +6,8 @@
 typedef enum {
   ADD = 0b0000,
   SUB = 0b0001,
-  SLT = 0b0011,
+  SLT = 0b0010,
+  SLTU = 0b0011,
 
   AND = 0b0100,
   OR = 0b0101,
@@ -30,6 +31,9 @@ void test_op(OP op, uint32_t a, uint32_t b) {
     break;
   case SLT:
     result = (int32_t)a < (int32_t)b;
+    break;
+  case SLTU:
+    result = a < b;
     break;
 
   case AND:
@@ -79,6 +83,7 @@ int main(int argc, const char *argv[]) {
   test_op(SLT, 0x8fffffff, 0xffffffff);
   test_op(SLT, 0xffffffff, 0x00000001);
   test_op(SLT, 0x00000001, 0xffffffff);
+  test_op_random(SLTU, 1000);
 
   test_op_random(OR, 1000);
   test_op(OR, 0x00000000, 0x00000000);

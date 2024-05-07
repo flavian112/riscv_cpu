@@ -39,7 +39,7 @@ module testbench_alu();
   assign exp_zero = exp_flags[0];
 
   reg [31:0] alu_test_count, alu_error_count;
-  reg [103:0] alu_testvec [0:9999];
+  reg [103:0] alu_testvec [0:20000];
 
   initial begin
     #5;
@@ -62,7 +62,7 @@ module testbench_alu();
 
     alu_test_count = alu_test_count + 1;
 
-    if ((alu_test_count == 9027)) begin
+    if ((alu_test_count == 10027)) begin
       $display("FINISHED (ALU), with %d errors out of %d tests.", alu_error_count, alu_test_count);
       #16;
 
@@ -73,9 +73,9 @@ module testbench_alu();
   
   
 
-  alu #(.N(32)) alu (
-    .src0(a),
-    .src1(b),
+  alu alu (
+    .a(a),
+    .b(b),
     .op(op),
     .result(result),
     .zero(zero)

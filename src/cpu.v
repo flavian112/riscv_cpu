@@ -1,142 +1,159 @@
-module cpu #(
-  parameter N = 32,
-  parameter XLEN = 32
-)(
+module cpu (
   input clk,
   input rst
 );
 
 
-wire pc_we;
+// Control Unit
+
 wire mem_addr_src;
-wire mem_we;
+wire pc_we;
 wire instr_we;
 wire rf_we;
-wire [1:0] imm_src;
-wire [1:0] alu_src0_src;
-wire [1:0] alu_src1_src;
-wire [3:0] alu_op;
 wire alu_zero;
+wire [3:0] alu_op;
+wire [1:0] alu_src_a;
+wire [1:0] alu_src_b;
 wire [1:0] result_src;
 
-reg [N-1:0] result;
-
-
 // Fetch
-reg [N-1:0] pc, pc_old, instr;
 
+reg [31:0] pc;
 
 always @ (posedge clk or posedge rst) begin
- if (rst) pc <= 32'h0001_0000;
- else if (pc_we) pc <= result;
+  if (rst) pc <= 32'h0001_0000;
+  else if (pc_we) pc <= result;
 end
 
-always @ (posedge clk) begin
-  if (instr_we) begin
-    pc_old <= pc;
-    instr <= mem_data_read;
-  end
-end
+wire [31:0] mem_addr = mem_addr_src ? result : pc;
 
-// Memory
-wire [N-1:0] mem_addr;
-assign mem_addr = mem_addr_src ? pc : result;
+wire [31:0] mem_read_data;
 
-wire [N-1:0] mem_data_write;
-wire [N-1:0] mem_data_read;
-reg [N-1:0] data;
-
-memory_unit #(.N(N)) mu (
+memory_unit mu (
   .clk(clk),
   .rst(rst),
   .we(mem_we),
   .addr(mem_addr),
-  .data_read(mem_data_read),
-  .data_write(mem_data_write)
+  .read_data(mem_read_data),
+  .write_data(b_buf)
 );
 
-always @ (posedge clk) begin
-  data <= mem_data_read;
+reg [31:0] instruction;
+reg [31:0] pc_buf;
+
+always @ (posedge clk or posedge rst) begin
+  if (rst) begin
+    pc_buf <= 32'b0;
+    instruction <= 32'b0;
+  end else begin
+    if (instr_we) begin
+      pc_buf <= pc;
+      instruction <= mem_read_data; 
+    end
+  end
 end
 
-// Register file
+reg [31:0] data;
 
-reg [N-1:0] rf_data0_old, rf_data1_old;
-wire [N-1:0] rf_data0, rf_data1;
+always @(posedge clk or posedge rst) begin
+  if (rst) data <= 32'b0;
+  else data <= mem_read_data;
+end
 
-register_file #(.N(N), .XLEN(XLEN)) rf(
+// Instruction Decode
+
+wire [6:0] opcode;
+wire [2:0] funct3;
+wire [6:0] funct7;
+wire [31:0] immediate;
+wire [4:0] rs1, rs2, rd;
+
+instruction_decode id (
+  .instruction(instruction),
+  .opcode(opcode),
+  .funct3(funct3),
+  .funct7(funct7),
+  .immediate(immediate),
+  .rs1(rs1),
+  .rs2(rs2),
+  .rd(rd)
+);
+
+// Register File
+
+wire [31:0] rs1_data, rs2_data;
+
+register_file rf (
   .clk(clk),
   .rst(rst),
   .we(rf_we),
-  .addr_read0(instr[19:15]),
-  .addr_read1(instr[24:20]),
-  .addr_write2(instr[11:7]),
-  .data_read0(rf_data0),
-  .data_read1(rf_data1),
-  .data_write2(result)
+  .rs1(rs1),
+  .rs2(rs2),
+  .rd(rd),
+  .rs1_data(rs1_data),
+  .rs2_data(rs2_data),
+  .rd_data(result)
 );
 
-always @ (posedge clk) begin
-  rf_data0_old <= rf_data0;
-  rf_data1_old <= rf_data1;
-end
+reg [31:0] a_buf, b_buf;
 
-assign mem_data_write = rf_data1_old;
-
-reg [N-1:0] imm;
-
-always @ (*) begin
-  case (imm_src)
-    2'b00: imm <= {{20{instr[31]}}, instr[31:20]};
-    2'b01: imm <= {{20{instr[31]}}, instr[31:25], instr[11:7]};
-    2'b10: imm <= {{20{instr[31]}}, instr[7], instr[30:25], instr[11:8], 1'b0};
-  endcase
-end
-
-reg [N-1:0] alu_src0, alu_src1;
-
-always @ (*) begin
-  case(alu_src0_src)
-    2'b00: alu_src0 <= pc;
-    2'b01: alu_src0 <= pc_old;
-    2'b10: alu_src0 <= rf_data0_old;
-  endcase
-end
-
-always @ (*) begin
-  case(alu_src1_src)
-    2'b00: alu_src1 <= rf_data1_old;
-    2'b01: alu_src1 <= imm;
-    2'b10: alu_src1 <= {{(N-3){1'b0}}, 3'h4};
-  endcase
+always @ (posedge clk or posedge rst) begin
+  if (rst) begin
+    a_buf <= 32'b0;
+    b_buf <= 32'b0;
+  end else begin
+    a_buf <= rs1;
+    b_buf <= rs2;
+  end
 end
 
 // Execute
 
-wire [N-1:0] alu_result;
+reg [31:0] a, b;
+wire [31:0] alu_result;
 
-alu #(.N(N)) alu (
-  .src0(alu_src0),
-  .src1(alu_src1),
+always @ (*) begin
+  case(alu_src_a)
+    2'b00: a <= pc;
+    2'b01: a <= pc_buf;
+    2'b10: a <= a_buf;
+    default: a <= 32'b0;
+  endcase
+end
+
+always @ (*) begin
+  case(alu_src_b)
+    2'b00: b <= b_buf;
+    2'b01: b <= immediate;
+    2'b10: b <= 32'h4;
+    default: b <= 32'b0;
+  endcase
+end
+
+alu alu (
+  .a(a),
+  .b(b),
   .op(alu_op),
   .result(alu_result),
   .zero(alu_zero)
 );
 
-reg [N-1:0] alu_out;
+reg [31:0] result_buf;
 
-always @ (posedge clk) begin
-  alu_out <= alu_result;
+always @ (posedge clk or posedge rst) begin
+  if (rst) result_buf <= 32'b0;
+  else result_buf <= alu_result;
 end
+
+reg [31:0] result;
 
 always @ (*) begin
-  case (result_src)
-    2'b00: result <= alu_out;
+  case(result_src)
+    2'b00: result <= result_buf;
     2'b01: result <= data;
     2'b10: result <= alu_result;
+    default: result <= 32'b0;
   endcase
 end
-
-
 
 endmodule

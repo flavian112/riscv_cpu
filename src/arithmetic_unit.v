@@ -1,23 +1,21 @@
-module arithmetic_unit #(
-  parameter N = 32
-)(
-  input [N-1:0] src0, src1,
-  input [1:0] op, // 00: ADD, 01: SUB, 11: SLT
-  output [N-1:0] result
+module arithmetic_unit (
+  input [31:0] a, b,
+  input [1:0] op,
+  output reg [31:0] result
 );
 
-wire [N-1:0] src1_inv, sum;
-wire cin, src0_lt_src1, overflow;
+wire signed [31:0] a_signed, b_signed;
 
-assign src1_inv = op[0] ? ~src1 : src1;
-assign cin = op[0];
+assign a_signed = a;
+assign b_signed = b;
 
-assign sum = src0 + src1_inv + cin;
-
-assign overflow = ~(src0[N-1] ^ src1[N-1] ^ op[0]) & (src0[N-1] ^ sum[N-1]);
-
-assign src0_lt_src1 = overflow ^ sum[N-1];
-
-assign result = op[1] ? {{(N-1){1'b0}}, src0_lt_src1} : sum;
+always @ (*) begin
+  case (op)
+    2'b00: result <= a + b;                               // ADD
+    2'b01: result <= a - b;                               // SUB
+    2'b10: result <= { {31{1'b0}}, a_signed < b_signed }; // SLT
+    2'b11: result <= { {31{1'b0}}, a < b };               // SLTU
+  endcase
+end
 
 endmodule
