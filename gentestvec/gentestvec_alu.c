@@ -21,6 +21,7 @@ typedef enum {
 void test_op(OP op, uint32_t a, uint32_t b) {
   uint32_t result;
   bool zero;
+  bool equal;
 
   switch (op) {
   case ADD:
@@ -58,8 +59,10 @@ void test_op(OP op, uint32_t a, uint32_t b) {
   }
 
   zero = result == 0;
+  equal = a == b;
 
-  printf("%01X__%08X_%08X__%08X_%01X\n", op & 0x0f, a, b, result, zero);
+  printf("%01X__%08X_%08X__%08X_%01X%01X\n", op & 0x0f, a, b, result, equal,
+         zero);
 }
 
 void test_op_random(OP op, int num) {

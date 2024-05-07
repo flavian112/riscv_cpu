@@ -4,6 +4,7 @@ module control_unit (
  input [2:0] funct3,
  input [6:0] funct7,
  input alu_zero,
+ input alu_equal,
  output pc_we,
  output mem_addr_src,
  output mem_we,
@@ -60,6 +61,12 @@ always @ (*) begin
     s10_beq:       next_state <= s00_fetch;
   endcase
 end
+
+wire branch;
+wire pc_update;
+
+assign pc_we = (alu_zero & branch) | pc_update;
+
 /*
 always @ (*) begin
  case(state)

@@ -11,6 +11,7 @@ wire pc_we;
 wire instr_we;
 wire rf_we;
 wire alu_zero;
+wire alu_equal;
 wire [3:0] alu_op;
 wire [1:0] alu_a_src;
 wire [1:0] alu_b_src;
@@ -23,6 +24,7 @@ control_unit cu (
   .funct3(funct3),
   .funct7(funct7),
   .alu_zero(alu_zero),
+  .alu_equal(alu_equal),
   .pc_we(pc_we),
   .mem_addr_src(mem_addr_src),
   .mem_we(mem_we),
@@ -153,7 +155,8 @@ alu alu (
   .b(b),
   .op(alu_op),
   .result(alu_result),
-  .zero(alu_zero)
+  .zero(alu_zero),
+  .equal(alu_equal)
 );
 
 reg [31:0] result_buf;
