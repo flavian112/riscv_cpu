@@ -21,6 +21,7 @@ The board used in this project is a [Tang Nano 9K](https://wiki.sipeed.com/hardw
 ## Tools
 
 ### Simulation
+
 * [clang](https://llvm.org) for compiling testvector generator sources
 * [iverilog](https://github.com/steveicarus/iverilog) for building simulation
 * [vvp](https://steveicarus.github.io/iverilog/developer/guide/vvp/vvp.html) for running simulation
@@ -28,6 +29,7 @@ The board used in this project is a [Tang Nano 9K](https://wiki.sipeed.com/hardw
 ### ROM
 
 * [riscv64 toolchain](https://github.com/riscv-collab/riscv-gnu-toolchain) for building prog source files, although here used for compiling for riscv32
+
 ### Synthesis
 
 * [yosys](https://github.com/YosysHQ/oss-cad-suite-build) for synthesis
@@ -38,9 +40,20 @@ The board used in this project is a [Tang Nano 9K](https://wiki.sipeed.com/hardw
 ### Debugging
 
 * [gtkwave](https://github.com/gtkwave/gtkwave) for viewing waveforms
+* [openocd](https://openocd.org) for debugging
+
+
+## Resources
+
+* [RISC-V ISA](https://riscv.org/specifications/)
+* [Digital Design and Computer Architecture by David and Sarah Harris](https://pages.hmc.edu/harris/ddca/)
+* [Computer Organization and Design by David Patterson](https://shop.elsevier.com/books/computer-organization-and-design-risc-v-edition/patterson/978-0-12-820331-6)
+* [Operating Systems: Three Easy Pieces by Remzi and Andrea Arpaci-Dusseau](https://pages.cs.wisc.edu/~remzi/OSTEP/)
+* [Example RISCV Cores](https://github.com/yunchenlo/awesome-RISCV-Cores)
 
 
 ## Waveform Example
+
 Here we can see the waveforms of various internal signal of the CPU, executing the following instructions:
 
 ```(asm)
