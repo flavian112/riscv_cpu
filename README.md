@@ -18,6 +18,28 @@ The board used in this project is a [Tang Nano 9K](https://wiki.sipeed.com/hardw
 * `make rom` to compile source files in prog/src, link and generate rom file.
 * `make wave` to view waveform of cpu running build/rom.hex.
 
+## Tools
+
+### Simulation
+* [clang](https://llvm.org) for compiling testvector generator sources
+* [iverilog](https://github.com/steveicarus/iverilog) for building simulation
+* [vvp](https://steveicarus.github.io/iverilog/developer/guide/vvp/vvp.html) for running simulation
+
+### ROM
+
+* [riscv64 toolchain](https://github.com/riscv-collab/riscv-gnu-toolchain) for building prog source files, although here used for compiling for riscv32
+### Synthesis
+
+* [yosys](https://github.com/YosysHQ/oss-cad-suite-build) for synthesis
+* [nextpnr-gowin](https://github.com/YosysHQ/apicula) for place and route
+* [gowin_pack](https://github.com/YosysHQ/apicula) for generating bitstream
+* [openFPGALoader](https://github.com/trabucayre/openFPGALoader) for uploading bitstream to FPGA
+
+### Debugging
+
+* [gtkwave](https://github.com/gtkwave/gtkwave) for viewing waveforms
+
+
 ## Waveform Example
 Here we can see the waveforms of various internal signal of the CPU, executing the following instructions:
 
