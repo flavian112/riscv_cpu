@@ -9,14 +9,14 @@ module rom #(
 
 `include "include/log2.vh"
 
-reg [7:0] memory [SIZE-1:0];
+reg [7:0] memory [0:SIZE-1];
 
 initial begin
   $readmemh("rom/rom.hex", memory, 0, SIZE-1);
 end
 
 always @(posedge clk) begin
-  data_read = memory[addr];
+  data_read <= {memory[addr + 3], memory[addr + 2], memory[addr + 1], memory[addr + 0] };
 end
 
 

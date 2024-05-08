@@ -6,14 +6,14 @@ module control_unit (
  input alu_zero,
  input alu_equal,
  output pc_we,
- output mem_addr_src,
- output mem_we,
- output instr_we,
- output [1:0] result_src,
+ output reg mem_addr_src,
+ output reg mem_we,
+ output reg instr_we,
+ output reg [1:0] result_src,
  output [3:0] alu_op,
- output [1:0] alu_a_src,
- output [1:0] alu_b_src,
- output rf_we
+ output reg [1:0] alu_a_src,
+ output reg [1:0] alu_b_src,
+ output reg rf_we
 );
 
 parameter s00_fetch     = 4'h0,
@@ -62,27 +62,89 @@ always @ (*) begin
   endcase
 end
 
-wire branch;
-wire pc_update;
+reg branch;
+reg pc_update;
+reg [1:0] alu_ctrl;
 
 assign pc_we = (alu_zero & branch) | pc_update;
 
-/*
+
 always @ (*) begin
- case(state)
-    s00_fetch:
-    s01_decode:
-    s02_mem_addr:
-    s03_mem_read:
-    s04_mem_wb:
-    s05_mem_write:
-    s06_execute_r:
-    s07_alu_wb:
-    s08_execute_i:
-    s09_jal:
-    s10_beq:
+  branch = 1'b0;
+  pc_update = 1'b0;
+  mem_we = 1'b0;
+  rf_we = 1'b0;
+  instr_we = 1'b0;
+  case(state)
+    s00_fetch: begin
+      mem_addr_src <= 1'b0;
+      instr_we      = 1'b1;
+      alu_a_src    <= 2'b00;
+      alu_b_src    <= 2'b10;
+      alu_ctrl     <= 2'b00;
+      result_src   <= 2'b10;
+      pc_update     = 1'b1;
+    end
+    s01_decode: begin
+      alu_a_src <= 2'b01;
+      alu_b_src <= 2'b01;
+      alu_ctrl  <= 2'b00;
+    end
+    s02_mem_addr: begin
+      alu_a_src <= 2'b10;
+      alu_b_src <= 2'b01;
+      alu_ctrl  <= 2'b00;
+    end
+    s03_mem_read: begin
+      result_src   <= 2'b00;
+      mem_addr_src <= 1'b1;
+    end
+    s04_mem_wb: begin
+      result_src <= 2'b01;
+      rf_we       = 1'b1;
+    end
+    s05_mem_write: begin
+      result_src   <= 2'b00;
+      mem_addr_src <= 1'b1;
+      mem_we        = 1'b1;
+    end
+    s06_execute_r: begin
+      alu_a_src <= 2'b10;
+      alu_b_src <= 2'b00;
+      alu_ctrl  <= 2'b10;
+    end
+    s07_alu_wb: begin
+      result_src <= 2'b00;
+      rf_we       = 1'b1;
+    end
+    s08_execute_i: begin
+      alu_a_src <= 2'b10;
+      alu_b_src <= 2'b01;
+      alu_ctrl  <= 2'b10;
+    end
+    s09_jal: begin
+      alu_a_src  <= 2'b01;
+      alu_b_src  <= 2'b10;
+      alu_ctrl   <= 2'b00;
+      result_src <= 2'b00;
+      pc_update   = 1'b1;
+    end
+    s10_beq: begin
+      alu_a_src  <= 2'b10;
+      alu_b_src  <= 2'b00;
+      alu_ctrl   <= 2'b01;
+      result_src <= 2'b00;
+      branch      = 1'b1;
+    end
   endcase
 end
-*/
+
+alu_op_decode aod (
+  .opcode(opcode),
+  .alu_ctrl(alu_ctrl),
+  .funct3(funct3),
+  .funct7(funct7),
+  .alu_op(alu_op)
+);
 
 endmodule

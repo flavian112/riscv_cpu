@@ -21,9 +21,9 @@ always @(posedge clk or posedge rst) begin
       memory[i] <= 0;
   end else begin
     if (we) begin
-      memory[addr] = data_write;
+      { memory[addr + 3], memory[addr + 2], memory[addr + 1], memory[addr + 0] } = data_write;
     end
-    data_read = memory[addr];
+    data_read = { memory[addr + 3], memory[addr + 2], memory[addr + 1], memory[addr + 0] };
   end
 
 end

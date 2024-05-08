@@ -1,5 +1,6 @@
 module alu_op_decode (
   input [6:0] opcode,
+  input [1:0] alu_ctrl,
   input [2:0] funct3,
   input [6:0] funct7,
   output reg [3:0] alu_op

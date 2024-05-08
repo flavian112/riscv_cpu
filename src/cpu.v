@@ -7,6 +7,7 @@ module cpu (
 // Control Unit
 
 wire mem_addr_src;
+wire mem_we;
 wire pc_we;
 wire instr_we;
 wire rf_we;
