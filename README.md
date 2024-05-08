@@ -18,3 +18,13 @@ The board used in this project is a [Tang Nano 9K](https://wiki.sipeed.com/hardw
 * `make rom` to compile source files in prog/src, link and generate rom file.
 * `make wave` to view waveform of cpu running build/rom.hex.
 
+## Waveform Example
+Here we can see the waveforms of various internal signal of the CPU, executing the following instructions:
+
+```(asm)
+  addi  t0, zero, 5
+  addi  t1, zero, 3
+  add   t2, t0,   t1
+```
+
+![Waveform adding two numbers](res/waveform_add_two_numbers.png)
