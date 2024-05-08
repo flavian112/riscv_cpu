@@ -123,8 +123,8 @@ always @ (posedge clk or posedge rst) begin
     a_buf <= 32'b0;
     b_buf <= 32'b0;
   end else begin
-    a_buf <= rs1;
-    b_buf <= rs2;
+    a_buf <= rs1_data;
+    b_buf <= rs2_data;
   end
 end
 

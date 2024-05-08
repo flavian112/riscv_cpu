@@ -19,7 +19,8 @@ parameter ALU_OP_ADD  = 4'b0000,
 
 
 always @ (*) begin
-  case (opcode)
+  if (alu_ctrl == 2'b00) alu_op <= ALU_OP_ADD;
+  else case (opcode)
     7'b0110011: begin // ADD, SUB, SLL, SLT, SLTU, XOR, SRL, SRA, OR, AND
       case (funct3)
         3'b000: alu_op <= funct7[5] ? ALU_OP_SUB : ALU_OP_ADD;
