@@ -12,7 +12,7 @@ module rom #(
 reg [7:0] memory [0:SIZE-1];
 
 initial begin
-  $readmemh("rom/rom.hex", memory, 0, SIZE-1);
+  $readmemh("build/rom.hex", memory, 0, SIZE-1);
 end
 
 always @(posedge clk) begin

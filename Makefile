@@ -39,6 +39,27 @@ FAMILY = GW1N-9C
 DEVICE = GW1NR-LV9QN88PC6/I5
 BOARD = tangnano9k
 
+# RISCV Toolchain
+RISCV_TOOLCHAIN = riscv64-unknown-elf
+RISCV_AS = $(RISCV_TOOLCHAIN)-as
+RISCV_CC = $(RISCV_TOOLCHAIN)-gcc
+RISCV_LD = $(RISCV_TOOLCHAIN)-ld
+RISCV_OBJCOPY = $(RISCV_TOOLCHAIN)-objcopy
+
+RISCV_ASFLAGS = -march=rv32i -mabi=ilp32
+RISCV_CFLAGS = -march=rv32i -mabi=ilp32 -O2 -Wall
+RISCV_LDFLAGS = -T prog/link.ld -m elf32lriscv
+
+PROG_SOURCE_DIR = prog/src
+
+PROG_ASSEMBLY_SOURCES = $(wildcard $(PROG_SOURCE_DIR)/*.s)
+PROG_C_SOURCES = $(wildcard $(PROG_SOURCE_DIR)/*.c)
+PROG_OBJECT_FILES = $(PROG_ASSEMBLY_SOURCES:$(PROG_SOURCE_DIR)/%.s=$(BUILD_DIR)/%.o) $(PROG_C_SOURCES:$(PROG_SOURCE_DIR)/%.c=$(BUILD_DIR)/%.o)
+PROG_ELF_FILE = $(BUILD_DIR)/prog.elf
+PROG_BINARY_FILE = $(BUILD_DIR)/prog.bin
+PROG_ROM_FILE = $(BUILD_DIR)/rom.hex
+
+
 all: simulate
 
 
@@ -77,7 +98,7 @@ $(BITSTREAM): $(BUILD_DIR)/$(PRJ_NAME)_pnr.json
 
 bitstream: $(BITSTREAM)
 	
-program: $(BITSTREAM)
+upload: $(BITSTREAM)
 	$(PROGRAMMER) -b $(BOARD) $(BITSTREAM)
 
 flash: $(BITSTREAM)
@@ -86,7 +107,7 @@ flash: $(BITSTREAM)
 simulate: $(WAVEFORM_FILES)
 
 # Build the testbench executables
-$(BUILD_DIR)/testbench_%: $(SIM_DIR)/testbench_%.v $(SRC_FILES) | $(BUILD_DIR)
+$(BUILD_DIR)/testbench_%: $(SIM_DIR)/testbench_%.v $(SRC_FILES) | $(BUILD_DIR) $(PROG_ROM_FILE)
 	$(IVERILOG) -o $@ $^
 
 # Build the test vector generator executables
@@ -109,6 +130,28 @@ $(BUILD_DIR)/waveform_%.vcd: $(BUILD_DIR)/testbench_% $(BUILD_DIR)/testvec_%.txt
 	@echo "==================================================="
 	@echo
 
+rom: $(PROG_ROM_FILE)
+
+# Assemble assembly source files into object files
+$(BUILD_DIR)/%.o: $(PROG_SOURCE_DIR)/%.s | $(BUILD_DIR)
+	$(RISCV_AS) $(RISCV_ASFLAGS) -o $@ $<
+
+# Compile C source files into object files
+$(BUILD_DIR)/%.o: $(PROG_SOURCE_DIR)/%.c | $(BUILD_DIR)
+	$(RISCV_CC) $(RISCV_CFLAGS) -c -o $@ $<
+
+# Link the object files to create an ELF file
+$(PROG_ELF_FILE): $(PROG_OBJECT_FILES)
+	$(RISCV_LD) $(RISCV_LDFLAGS) -o $@ $^
+
+# Convert the ELF file to a binary file
+$(PROG_BINARY_FILE): $(PROG_ELF_FILE)
+	$(RISCV_OBJCOPY) -O binary $< $@
+
+# Convert the binary file to a hex file
+$(PROG_ROM_FILE): $(PROG_BINARY_FILE)
+	xxd -g 1 -c 1 -p $< > $@
+
 # Create the build directory
 $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
@@ -117,5 +160,5 @@ $(BUILD_DIR):
 clean:
 	rm -rf $(BUILD_DIR)
 
-.PHONY: all simulate bitsream program flash clean
+.PHONY: all simulate rom bitsream upload flash clean
 
