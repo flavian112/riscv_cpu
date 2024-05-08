@@ -156,9 +156,12 @@ $(PROG_ROM_FILE): $(PROG_BINARY_FILE)
 $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
 
+wave:
+	$(GTKWAVE) -a debug/cpu.gtkw $(BUILD_DIR)/waveform_cpu.vcd
+
 # Clean
 clean:
 	rm -rf $(BUILD_DIR)
 
-.PHONY: all simulate rom bitsream upload flash clean
+.PHONY: all simulate rom bitsream upload flash wave clean
 

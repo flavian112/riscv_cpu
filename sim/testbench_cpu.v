@@ -12,7 +12,7 @@ cpu uut (
 
 integer file, r, eof;
 reg [100*8:1] line;
-reg [31:0] test_count, error_count;
+reg [31:0] clk_cycle_count;
 
 
 always #5 clk = ~clk;
@@ -44,8 +44,7 @@ initial begin
   clk = 0;
   rst = 0;
   
-  test_count = 0;
-  error_count = 0;
+  clk_cycle_count = 0;
 
   @(negedge clk);
   rst = 1;
@@ -55,8 +54,8 @@ initial begin
 
   while (1) begin
     @(posedge clk);
-    test_count = test_count + 1;
-    if (test_count == 100) $finish;
+    clk_cycle_count = clk_cycle_count + 1;
+    if (clk_cycle_count == 100) $finish;
   end
 end
 

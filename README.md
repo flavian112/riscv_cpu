@@ -16,4 +16,5 @@ The board used in this project is a [Tang Nano 9K](https://wiki.sipeed.com/hardw
 * `make clean` to clean build files.
 * `gtkwave build/waveform_*.vcd` to view waveform of corresponding testbench.
 * `make rom` to compile source files in prog/src, link and generate rom file.
+* `make wave` to view waveform of cpu running build/rom.hex.
 
