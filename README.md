@@ -11,8 +11,9 @@ The board used in this project is a [Tang Nano 9K](https://wiki.sipeed.com/hardw
 * `make all` alias for `make simulate`.
 * `make simulate` to run all the testbenches (sim/testbench_*.v).
 * `make bitstream` to synthesize, place and route the design and to generate the bitstream.
-* `make program` to upload the bitstream to the FPGA.
+* `make upload` to upload the bitstream to the FPGA.
 * `make flash` to flash the bitsream to the FPGA.
 * `make clean` to clean build files.
 * `gtkwave build/waveform_*.vcd` to view waveform of corresponding testbench.
+* `make rom` to compile source files in prog/src, link and generate rom file.
 
