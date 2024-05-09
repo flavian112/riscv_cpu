@@ -1,6 +1,6 @@
 module alu_op_decode (
   input [6:0] opcode,
-  input [1:0] alu_ctrl,
+  input alu_ctrl,
   input [2:0] funct3,
   input [6:0] funct7,
   output reg [3:0] alu_op
@@ -19,7 +19,7 @@ parameter ALU_OP_ADD  = 4'b0000,
 
 
 always @ (*) begin
-  if (alu_ctrl == 2'b00) alu_op <= ALU_OP_ADD;
+  if (alu_ctrl == 1'b1) alu_op <= ALU_OP_ADD;
   else case (opcode)
     7'b0110011: begin // ADD, SUB, SLL, SLT, SLTU, XOR, SRL, SRA, OR, AND
       case (funct3)

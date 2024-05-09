@@ -32,16 +32,14 @@ module testbench_alu();
 
   reg [31:0] a, b, exp_result;
   reg [3:0] op;
-  reg [7:0] exp_flags;
+  reg [3:0] exp_flags;
   wire [31:0] result;
   wire zero, exp_zero;
-  wire equal, exp_equal;
 
   assign exp_zero = exp_flags[0];
-  assign exp_equal = exp_flags[4];
 
   reg [31:0] alu_test_count, alu_error_count;
-  reg [107:0] alu_testvec [0:20000];
+  reg [103:0] alu_testvec [0:20000];
 
   initial begin
     #5;
@@ -54,12 +52,11 @@ module testbench_alu();
     #16;
     {op, a, b, exp_result, exp_flags} = alu_testvec[alu_test_count];
     #32;
-    if ((result !== exp_result) | (zero !== exp_zero) | (equal != exp_equal)) begin
+    if ((result !== exp_result) | (zero !== exp_zero)) begin
       $display("ERROR (ALU) time: %5d, test: %d", $time, alu_test_count);
       $display("              op: %b, a: %h b: %h", op, a, b);
       $display("          result: %h (expected %h)", result, exp_result);
       $display("            zero: %b (expected %b)", zero, exp_zero);
-      $display("           equal: %b (expected %b)", equal, exp_equal);
       alu_error_count = alu_error_count + 1;
     end
 
@@ -81,8 +78,7 @@ module testbench_alu();
     .b(b),
     .op(op),
     .result(result),
-    .zero(zero),
-    .equal(equal)
+    .zero(zero)
   );
 
 endmodule

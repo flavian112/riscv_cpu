@@ -2,8 +2,7 @@ module alu (
   input [31:0] a, b,
   input [3:0] op,
   output reg [31:0] result,
-  output zero,
-  output equal
+  output zero
 );
 
 wire [31:0] arithmetic_result, logic_result, shift_result;
@@ -39,6 +38,5 @@ always @ (*) begin
 end
 
 assign zero = result == 32'b0;
-assign equal = a == b;
 
 endmodule
