@@ -26,7 +26,8 @@ parameter s00_fetch     = 4'h0,
           s07_alu_wb    = 4'h7,
           s08_execute_i = 4'h8,
           s09_jal       = 4'h9,
-          s10_beq       = 4'ha;
+          s10_jalr      = 4'ha,
+          s11_beq       = 4'hb;
 
 reg [3:0] state, next_state;
 
@@ -44,7 +45,8 @@ always @ (*) begin
       7'b0110011:  next_state <= s06_execute_r;
       7'b0010011:  next_state <= s08_execute_i;
       7'b1101111:  next_state <= s09_jal;
-      7'b1100011:  next_state <= s10_beq;
+      7'b1100111:  next_state <= s10_jalr;
+      7'b1100011:  next_state <= s11_beq;
       
     endcase
     s02_mem_addr:  case(opcode)
@@ -58,7 +60,8 @@ always @ (*) begin
     s07_alu_wb:    next_state <= s00_fetch;
     s08_execute_i: next_state <= s07_alu_wb;
     s09_jal:       next_state <= s07_alu_wb;
-    s10_beq:       next_state <= s00_fetch;
+    s10_jalr:      next_state <= s07_alu_wb;
+    s11_beq:       next_state <= s00_fetch;
   endcase
 end
 
@@ -129,7 +132,14 @@ always @ (*) begin
       result_src <= 2'b00;
       pc_update   = 1'b1;
     end
-    s10_beq: begin
+    s10_jalr: begin
+      alu_a_src  <= 2'b10;
+      alu_b_src  <= 2'b01;
+      alu_ctrl   <= 2'b00;
+      result_src <= 2'b10;
+      pc_update   = 1'b1;
+    end
+    s11_beq: begin
       alu_a_src  <= 2'b10;
       alu_b_src  <= 2'b00;
       alu_ctrl   <= 2'b01;
