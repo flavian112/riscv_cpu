@@ -35,17 +35,25 @@ _start:
 */
 
  
-  jal target
-  addi  t0, zero, 2
+#  jal target
+#  addi  t0, zero, 2
+#0010 0000
 
+addi  t0, zero, 0x0010
+slli  t0, t0,   16
+ori   t0, t0,   0x0000
+
+addi  t1, zero, 0xff
+sw    t1, 0(t0)
+lw     t2, 0(t0)
   
 
 halt_loop:
   j halt_loop
 
-target:
-  addi  t0, zero, 1
-  jalr  zero, ra, 0
+#target:
+#  addi  t0, zero, 1
+#  jalr  zero, ra, 0
  
 .section .data
 

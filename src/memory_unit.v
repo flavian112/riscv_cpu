@@ -13,7 +13,7 @@ wire [31:0] ram_read_data, rom_read_data;
 ram #(.N(32), .SIZE(1024)) ram(
   .clk(clk),
   .rst(rst),
-  .we(we_ram),
+  .we(ram_we),
   .addr(addr),
   .data_read(ram_read_data),
   .data_write(write_data)
@@ -44,8 +44,8 @@ always @(*) begin
     read_data <= 0;
   end else if (addr[31:16] >= 16'h0001 && addr[31:16] <= 16'h000F) begin
     read_data <= rom_read_data;
-    ram_we = we;
   end else if (addr[31:16] >= 16'h0010 && addr[31:16] <= 16'hFF0F) begin
+    ram_we = we;
     read_data <= ram_read_data;
   end else if (addr[31:16] >= 16'hFF10 && addr[31:16] <= 16'hFFFF) begin
     read_data <= 0;

@@ -42,6 +42,14 @@ The board used in this project is a [Tang Nano 9K](https://wiki.sipeed.com/hardw
 * [gtkwave](https://github.com/gtkwave/gtkwave) for viewing waveforms
 * [openocd](https://openocd.org) for debugging
 
+## Currently Supported Instructions
+
+* R-type: add, sub, and, or, xor, sll, srl, sra, slt, sltu
+* I-type: addi, andi, ori, xori, slti, sltiu, slli, srli, srai
+* S-type: sw
+* B-type: beq
+* U-type:
+* J-type: jal, jalr
 
 ## Resources
 
