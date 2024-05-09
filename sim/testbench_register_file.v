@@ -33,6 +33,7 @@ always #5 clk = ~clk;
 reg [1023:0] testvec_filename;
 reg [1023:0] waveform_filename;
 
+integer i;
 initial begin
   if ($value$plusargs("testvec=%s", testvec_filename)) begin
   end else begin
@@ -68,6 +69,14 @@ initial begin
   rst = 1;
   @(posedge clk);
   rst = 0;
+
+  for (i = 0; i < 32; i = i + 1) begin
+    we = 1;
+    addr_rd2 = i;
+    data_rd2 = 32'b0;
+    @(posedge clk);
+    #1;
+  end
 
   file = $fopen(testvec_filename, "r");
   if (file == 0) begin

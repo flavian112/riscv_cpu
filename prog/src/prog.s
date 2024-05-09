@@ -47,9 +47,9 @@ _start:
 # sw    t1, 0(t0)
 # lw     t2, 0(t0)
 
-  addi t0, zero, -1
+  addi t0, zero, 1
   addi t1, zero, 2
-  bltu t0, t1, branch_taken
+  bge t0, t1, branch_taken
   addi t2, zero, 1
 
 

@@ -8,6 +8,7 @@ module register_file (
 
 reg [31:0] registers[31:1];
 
+// For debugging purposes:
 wire [31:0] reg_x0_zero,
             reg_x1_ra,
             reg_x2_sp,
@@ -75,18 +76,18 @@ assign reg_x30_t5 = registers[30];
 assign reg_x31_t6 = registers[31];
   
 
-integer i;
-always @(posedge clk or rst) begin
-    if (rst) begin
-    for (i = 1; i < 32; i = i + 1)
-      registers[i] <= 32'b0;
-  end else begin
+// integer i;
+always @(posedge clk /*or rst*/) begin
+//    if (rst) begin
+//    for (i = 1; i < 32; i = i + 1)
+//      registers[i] <= 32'b0;
+//  end else begin
     rs1_data = (rs1 == 0) ? 32'b0 : registers[rs1];
     rs2_data = (rs2 == 0) ? 32'b0 : registers[rs2];
     if (we && (rd != 0)) begin
       registers[rd] <= rd_data;
     end
-  end
+//  end
 end
 
 endmodule
