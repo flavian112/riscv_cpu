@@ -1,230 +1,159 @@
 [*]
 [*] GTKWave Analyzer v3.4.0 (w)1999-2022 BSI
-[*] Wed May  8 10:49:57 2024
+[*] Sun May 12 19:27:12 2024
 [*]
 [dumpfile] "/Users/flavian/Documents/hobbies/electronics/projects/riscv_cpu/build/waveform_cpu.vcd"
-[dumpfile_mtime] "Wed May  8 10:49:11 2024"
-[dumpfile_size] 39809
+[dumpfile_mtime] "Sun May 12 19:21:04 2024"
+[dumpfile_size] 75506
 [savefile] "/Users/flavian/Documents/hobbies/electronics/projects/riscv_cpu/debug/cpu.gtkw"
-[timestart] 0
+[timestart] 277300
 [size] 1512 916
-[pos] -1 -1
-*-16.000000 29400 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[pos] -1 0
+*-15.000000 27100 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] testbench_register_file.
-[treeopen] testbench_register_file.uut.
-[treeopen] testbench_register_file.uut.alu.
-[treeopen] testbench_register_file.uut.cu.
-[treeopen] testbench_register_file.uut.mu.
-[treeopen] testbench_register_file.uut.mu.ram.
-[treeopen] testbench_register_file.uut.mu.rom.
+[treeopen] testbench_register_file.cpu.
 [sst_width] 253
-[signals_width] 252
+[signals_width] 390
 [sst_expanded] 1
 [sst_vpaned_height] 278
 @28
 testbench_register_file.clk
 testbench_register_file.rst
-@23
+@24
 testbench_register_file.clk_cycle_count[31:0]
 @200
 -
 @22
 [color] 2
-testbench_register_file.uut.cu.state[3:0]
-[color] 2
-testbench_register_file.uut.cu.next_state[3:0]
-@200
--
+testbench_register_file.cpu.control_unit.state[3:0]
 @28
-testbench_register_file.uut.cu.instr_we
+testbench_register_file.cpu.instr_we
 @22
-testbench_register_file.uut.pc[31:0]
-@c00022
-testbench_register_file.uut.pc_buf[31:0]
+testbench_register_file.cpu.instr[31:0]
+@200
+-
+@22
+testbench_register_file.cpu.imm[31:0]
+@200
+-
+@22
+testbench_register_file.cpu.pc[31:0]
+testbench_register_file.cpu.pc_buf[31:0]
 @28
-(0)testbench_register_file.uut.pc_buf[31:0]
-(1)testbench_register_file.uut.pc_buf[31:0]
-(2)testbench_register_file.uut.pc_buf[31:0]
-(3)testbench_register_file.uut.pc_buf[31:0]
-(4)testbench_register_file.uut.pc_buf[31:0]
-(5)testbench_register_file.uut.pc_buf[31:0]
-(6)testbench_register_file.uut.pc_buf[31:0]
-(7)testbench_register_file.uut.pc_buf[31:0]
-(8)testbench_register_file.uut.pc_buf[31:0]
-(9)testbench_register_file.uut.pc_buf[31:0]
-(10)testbench_register_file.uut.pc_buf[31:0]
-(11)testbench_register_file.uut.pc_buf[31:0]
-(12)testbench_register_file.uut.pc_buf[31:0]
-(13)testbench_register_file.uut.pc_buf[31:0]
-(14)testbench_register_file.uut.pc_buf[31:0]
-(15)testbench_register_file.uut.pc_buf[31:0]
-(16)testbench_register_file.uut.pc_buf[31:0]
-(17)testbench_register_file.uut.pc_buf[31:0]
-(18)testbench_register_file.uut.pc_buf[31:0]
-(19)testbench_register_file.uut.pc_buf[31:0]
-(20)testbench_register_file.uut.pc_buf[31:0]
-(21)testbench_register_file.uut.pc_buf[31:0]
-(22)testbench_register_file.uut.pc_buf[31:0]
-(23)testbench_register_file.uut.pc_buf[31:0]
-(24)testbench_register_file.uut.pc_buf[31:0]
-(25)testbench_register_file.uut.pc_buf[31:0]
-(26)testbench_register_file.uut.pc_buf[31:0]
-(27)testbench_register_file.uut.pc_buf[31:0]
-(28)testbench_register_file.uut.pc_buf[31:0]
-(29)testbench_register_file.uut.pc_buf[31:0]
-(30)testbench_register_file.uut.pc_buf[31:0]
-(31)testbench_register_file.uut.pc_buf[31:0]
-@1401200
--group_end
+testbench_register_file.cpu.pc_we
 @200
 -
 @22
-testbench_register_file.uut.instruction[31:0]
-testbench_register_file.uut.opcode[6:0]
+testbench_register_file.cpu.mem_addr[31:0]
+testbench_register_file.cpu.mem_rd[31:0]
+@23
+testbench_register_file.cpu.rd2_buf[31:0]
 @28
-testbench_register_file.uut.funct3[2:0]
+testbench_register_file.cpu.mem_we
 @22
-testbench_register_file.uut.funct7[6:0]
+testbench_register_file.cpu.data_buf[31:0]
 @200
 -
 @22
-testbench_register_file.uut.immediate[31:0]
-@200
--
+[color] 5
+testbench_register_file.cpu.alu_a[31:0]
+[color] 5
+testbench_register_file.cpu.alu_b[31:0]
 @28
-[color] 6
-testbench_register_file.uut.cu.mem_addr_src
+[color] 5
+testbench_register_file.cpu.alu_a_src[1:0]
+[color] 5
+testbench_register_file.cpu.alu_b_src[1:0]
 @22
-[color] 6
-testbench_register_file.uut.mu.addr[31:0]
-[color] 6
-testbench_register_file.uut.mu.read_data[31:0]
+[color] 5
+testbench_register_file.cpu.alu_op[3:0]
 @28
-[color] 6
-testbench_register_file.uut.mu.we
+testbench_register_file.cpu.alu_zero
 @22
-[color] 6
-testbench_register_file.uut.mu.write_data[31:0]
-@200
--
-@28
-[color] 2
-testbench_register_file.uut.alu_a_src[1:0]
-[color] 2
-testbench_register_file.uut.alu_b_src[1:0]
-@200
--
-@28
-[color] 2
-testbench_register_file.uut.cu.alu_ctrl[1:0]
-@22
-[color] 2
-testbench_register_file.uut.alu_op[3:0]
+[color] 5
+testbench_register_file.cpu.alu_result[31:0]
 @200
 -
 @22
-[color] 2
-testbench_register_file.uut.a[31:0]
-[color] 2
-testbench_register_file.uut.a_buf[31:0]
-[color] 2
-testbench_register_file.uut.b[31:0]
-[color] 2
-testbench_register_file.uut.b_buf[31:0]
-@200
--
-@22
-[color] 2
-testbench_register_file.uut.alu_result[31:0]
-@28
-[color] 2
-testbench_register_file.uut.alu_zero
-[color] 2
-testbench_register_file.uut.alu_equal
-@200
--
-@28
-testbench_register_file.uut.result_src[1:0]
-@22
-testbench_register_file.uut.result[31:0]
+testbench_register_file.cpu.result[31:0]
 @200
 -
 @22
 [color] 3
-testbench_register_file.uut.rf.reg_x0_zero[31:0]
+testbench_register_file.cpu.register_file.ra1[4:0]
 [color] 3
-testbench_register_file.uut.rf.reg_x1_ra[31:0]
+testbench_register_file.cpu.register_file.ra2[4:0]
 [color] 3
-testbench_register_file.uut.rf.reg_x2_sp[31:0]
-[color] 3
-testbench_register_file.uut.rf.reg_x3_gp[31:0]
-[color] 3
-testbench_register_file.uut.rf.reg_x4_tp[31:0]
-[color] 3
-testbench_register_file.uut.rf.reg_x5_t0[31:0]
-[color] 3
-testbench_register_file.uut.rf.reg_x6_t1[31:0]
-[color] 3
-testbench_register_file.uut.rf.reg_x7_t2[31:0]
-[color] 3
-testbench_register_file.uut.rf.reg_x8_s0_fp[31:0]
-[color] 3
-testbench_register_file.uut.rf.reg_x9_s1[31:0]
-[color] 3
-testbench_register_file.uut.rf.reg_x10_a0[31:0]
-[color] 3
-testbench_register_file.uut.rf.reg_x11_a1[31:0]
-[color] 3
-testbench_register_file.uut.rf.reg_x12_a2[31:0]
-[color] 3
-testbench_register_file.uut.rf.reg_x13_a3[31:0]
-[color] 3
-testbench_register_file.uut.rf.reg_x14_a4[31:0]
-[color] 3
-testbench_register_file.uut.rf.reg_x15_a5[31:0]
-[color] 3
-testbench_register_file.uut.rf.reg_x16_a6[31:0]
-[color] 3
-testbench_register_file.uut.rf.reg_x17_a7[31:0]
-[color] 3
-testbench_register_file.uut.rf.reg_x18_s2[31:0]
-[color] 3
-testbench_register_file.uut.rf.reg_x19_s3[31:0]
-[color] 3
-testbench_register_file.uut.rf.reg_x20_s4[31:0]
-[color] 3
-testbench_register_file.uut.rf.reg_x21_s5[31:0]
-[color] 3
-testbench_register_file.uut.rf.reg_x22_s6[31:0]
-[color] 3
-testbench_register_file.uut.rf.reg_x23_s7[31:0]
-[color] 3
-testbench_register_file.uut.rf.reg_x24_s8[31:0]
-[color] 3
-testbench_register_file.uut.rf.reg_x25_s9[31:0]
-[color] 3
-testbench_register_file.uut.rf.reg_x26_s10[31:0]
-[color] 3
-testbench_register_file.uut.rf.reg_x27_s11[31:0]
-[color] 3
-testbench_register_file.uut.rf.reg_x28_t3[31:0]
-[color] 3
-testbench_register_file.uut.rf.reg_x29_t4[31:0]
-[color] 3
-testbench_register_file.uut.rf.reg_x30_t5[31:0]
-[color] 3
-testbench_register_file.uut.rf.reg_x31_t6[31:0]
-@200
--
-@22
-[color] 3
-testbench_register_file.uut.rs1[4:0]
-[color] 3
-testbench_register_file.uut.rs2[4:0]
-[color] 3
-testbench_register_file.uut.rd[4:0]
+testbench_register_file.cpu.register_file.wa3[4:0]
 @28
 [color] 3
-testbench_register_file.uut.rf_we
+testbench_register_file.cpu.rf_we
+@200
+-
+@22
+[color] 3
+testbench_register_file.cpu.register_file.reg_x0_zero[31:0]
+[color] 3
+testbench_register_file.cpu.register_file.reg_x1_ra[31:0]
+[color] 3
+testbench_register_file.cpu.register_file.reg_x2_sp[31:0]
+[color] 3
+testbench_register_file.cpu.register_file.reg_x3_gp[31:0]
+[color] 3
+testbench_register_file.cpu.register_file.reg_x4_tp[31:0]
+[color] 3
+testbench_register_file.cpu.register_file.reg_x5_t0[31:0]
+[color] 3
+testbench_register_file.cpu.register_file.reg_x6_t1[31:0]
+[color] 3
+testbench_register_file.cpu.register_file.reg_x7_t2[31:0]
+[color] 3
+testbench_register_file.cpu.register_file.reg_x8_s0_fp[31:0]
+[color] 3
+testbench_register_file.cpu.register_file.reg_x9_s1[31:0]
+[color] 3
+testbench_register_file.cpu.register_file.reg_x10_a0[31:0]
+[color] 3
+testbench_register_file.cpu.register_file.reg_x11_a1[31:0]
+[color] 3
+testbench_register_file.cpu.register_file.reg_x12_a2[31:0]
+[color] 3
+testbench_register_file.cpu.register_file.reg_x13_a3[31:0]
+[color] 3
+testbench_register_file.cpu.register_file.reg_x14_a4[31:0]
+[color] 3
+testbench_register_file.cpu.register_file.reg_x15_a5[31:0]
+[color] 3
+testbench_register_file.cpu.register_file.reg_x16_a6[31:0]
+[color] 3
+testbench_register_file.cpu.register_file.reg_x17_a7[31:0]
+[color] 3
+testbench_register_file.cpu.register_file.reg_x18_s2[31:0]
+[color] 3
+testbench_register_file.cpu.register_file.reg_x19_s3[31:0]
+[color] 3
+testbench_register_file.cpu.register_file.reg_x20_s4[31:0]
+[color] 3
+testbench_register_file.cpu.register_file.reg_x21_s5[31:0]
+[color] 3
+testbench_register_file.cpu.register_file.reg_x22_s6[31:0]
+[color] 3
+testbench_register_file.cpu.register_file.reg_x23_s7[31:0]
+[color] 3
+testbench_register_file.cpu.register_file.reg_x24_s8[31:0]
+[color] 3
+testbench_register_file.cpu.register_file.reg_x25_s9[31:0]
+[color] 3
+testbench_register_file.cpu.register_file.reg_x26_s10[31:0]
+[color] 3
+testbench_register_file.cpu.register_file.reg_x27_s11[31:0]
+[color] 3
+testbench_register_file.cpu.register_file.reg_x28_t3[31:0]
+[color] 3
+testbench_register_file.cpu.register_file.reg_x29_t4[31:0]
+[color] 3
+testbench_register_file.cpu.register_file.reg_x30_t5[31:0]
+[color] 3
+testbench_register_file.cpu.register_file.reg_x31_t6[31:0]
 [pattern_trace] 1
 [pattern_trace] 0

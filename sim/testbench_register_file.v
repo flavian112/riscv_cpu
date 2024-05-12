@@ -12,14 +12,14 @@ wire [31:0] data_rs0, data_rs1;
 
 register_file uut (
   .clk(clk),
-  .rst(rst),
+  .rstn(!rst),
   .we(we),
-  .rs1(addr_rs0),
-  .rs2(addr_rs1),
-  .rd(addr_rd2),
-  .rs1_data(data_rs0),
-  .rs2_data(data_rs1),
-  .rd_data(data_rd2)
+  .ra1(addr_rs0),
+  .ra2(addr_rs1),
+  .wa3(addr_rd2),
+  .rd1(data_rs0),
+  .rd2(data_rs1),
+  .wd3(data_rd2)
 );
 
 integer file, r, eof;

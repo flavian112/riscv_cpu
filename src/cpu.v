@@ -1,28 +1,14 @@
 module cpu (
   input clk,
-  input rst
+  input rstn
 );
 
 
-// Control Unit
-
-wire mem_addr_src;
-wire mem_we;
-wire pc_we;
-wire instr_we;
-wire rf_we;
-wire alu_zero;
-wire [3:0] alu_op;
-wire [1:0] alu_a_src;
-wire [1:0] alu_b_src;
-wire [1:0] result_src;
-
-control_unit cu (
+control_unit control_unit (
   .clk(clk),
-  .rst(rst),
-  .opcode(opcode),
-  .funct3(funct3),
-  .funct7(funct7),
+  .rstn(rstn),
+  .instr(instr),
+  .imm_src(imm_src),
   .alu_zero(alu_zero),
   .pc_we(pc_we),
   .mem_addr_src(mem_addr_src),
@@ -35,146 +21,153 @@ control_unit cu (
   .rf_we(rf_we)
 );
 
-// Fetch
 
-reg [31:0] pc;
+wire [31:0] pc, pc_buf;
 
-always @ (posedge clk or posedge rst) begin
-  if (rst) pc <= 32'h0001_0000;
-  else if (pc_we) pc <= result;
-end
+wire [31:0] mem_addr;
 
-wire [31:0] mem_addr = mem_addr_src ? result : pc;
+wire mem_addr_src;
 
-wire [31:0] mem_read_data;
+wire [31:0] mem_rd;
 
-memory_unit mu (
+wire mem_we;
+wire instr_we;
+
+wire [31:0] instr;
+
+wire [31:0] data_buf;
+wire pc_we;
+
+wire rf_we;
+
+wire [31:0] rd1, rd2;
+wire [31:0] rd1_buf, rd2_buf;
+
+wire [31:0] alu_a, alu_b;
+
+wire [31:0] imm;
+wire [2:0] imm_src;
+
+wire [1:0] alu_a_src;
+wire [1:0] alu_b_src;
+
+wire [3:0] alu_op;
+
+wire [31:0] alu_result;
+wire alu_zero;
+
+wire [31:0] alu_result_buf;
+
+wire [1:0] result_src;
+
+wire [31:0] result;
+
+
+pc_reg pc_reg (
   .clk(clk),
-  .rst(rst),
+  .rstn(rstn),
+  .we(pc_we),
+  .pc_in(result),
+  .pc(pc)
+);
+
+mem_addr_src_mux mem_addr_src_mux (
+  .src_pc(pc),
+  .src_result(result),
+  .mem_addr_src(mem_addr_src),
+  .mem_addr(mem_addr)
+);
+
+memory_interface memory_interface (
+  .clk(clk),
+  .rstn(rstn),
   .we(mem_we),
   .addr(mem_addr),
-  .read_data(mem_read_data),
-  .write_data(b_buf)
+  .rd(mem_rd),
+  .wd(rd2_buf)
 );
 
-reg [31:0] instruction;
-reg [31:0] pc_buf;
-
-always @ (posedge clk or posedge rst) begin
-  if (rst) begin
-    pc_buf <= 32'b0;
-    instruction <= 32'b0;
-  end else begin
-    if (instr_we) begin
-      pc_buf <= pc;
-      instruction <= mem_read_data; 
-    end
-  end
-end
-
-reg [31:0] data;
-
-always @(posedge clk or posedge rst) begin
-  if (rst) data <= 32'b0;
-  else data <= mem_read_data;
-end
-
-// Instruction Decode
-
-wire [6:0] opcode;
-wire [2:0] funct3;
-wire [6:0] funct7;
-wire [31:0] immediate;
-wire [4:0] rs1, rs2, rd;
-
-instruction_decode id (
-  .instruction(instruction),
-  .opcode(opcode),
-  .funct3(funct3),
-  .funct7(funct7),
-  .immediate(immediate),
-  .rs1(rs1),
-  .rs2(rs2),
-  .rd(rd)
-);
-
-// Register File
-
-wire [31:0] rs1_data, rs2_data;
-
-register_file rf (
+instruction_reg instruction_reg (
   .clk(clk),
-  .rst(rst),
-  .we(rf_we),
-  .rs1(rs1),
-  .rs2(rs2),
-  .rd(rd),
-  .rs1_data(rs1_data),
-  .rs2_data(rs2_data),
-  .rd_data(result)
+  .rstn(rstn),
+  .we(instr_we),
+  .pc_in(pc),
+  .instr_in(mem_rd),
+  .pc_buf(pc_buf),
+  .instr(instr)
 );
 
-reg [31:0] a_buf, b_buf;
+data_reg data_reg (
+  .clk(clk),
+  .rstn(rstn),
+  .data_in(mem_rd),
+  .data_buf(data_buf)
+);
 
-always @ (posedge clk or posedge rst) begin
-  if (rst) begin
-    a_buf <= 32'b0;
-    b_buf <= 32'b0;
-  end else begin
-    a_buf <= rs1_data;
-    b_buf <= rs2_data;
-  end
-end
+immediate_extend immediate_extend (
+  .instr(instr),
+  .imm_src(imm_src),
+  .imm(imm)
+);
 
-// Execute
+register_file register_file (
+  .clk(clk),
+  .rstn(rstn),
+  .we(rf_we),
+  .ra1(instr[19:15]),
+  .ra2(instr[24:20]),
+  .wa3(instr[11:7]),
+  .rd1(rd1),
+  .rd2(rd2),
+  .wd3(result)
+);
 
-reg [31:0] a, b;
-wire [31:0] alu_result;
+register_file_reg register_file_reg (
+  .clk(clk),
+  .rstn(rstn),
+  .rd1_in(rd1),
+  .rd2_in(rd2),
+  .rd1_buf(rd1_buf),
+  .rd2_buf(rd2_buf)
+);
 
-always @ (*) begin
-  case(alu_a_src)
-    2'b00: a <= pc;
-    2'b01: a <= pc_buf;
-    2'b10: a <= a_buf;
-    default: a <= 32'b0;
-  endcase
-end
+alu_a_src_mux alu_a_src_mux(
+  .src_pc(pc),
+  .src_pc_buf(pc_buf),
+  .src_rd1_buf(rd1_buf),
+  .alu_a_src(alu_a_src),
+  .alu_a(alu_a)
+);
 
-always @ (*) begin
-  case(alu_b_src)
-    2'b00: b <= b_buf;
-    2'b01: b <= immediate;
-    2'b10: b <= 32'h4;
-    default: b <= 32'b0;
-  endcase
-end
+alu_b_src_mux alu_b_src_mux (
+  .src_rd2_buf(rd2_buf),
+  .src_imm(imm),
+  .alu_b_src(alu_b_src),
+  .alu_b(alu_b)
+);
 
 alu alu (
-  .a(a),
-  .b(b),
+  .a(alu_a),
+  .b(alu_b),
   .op(alu_op),
   .result(alu_result),
   .zero(alu_zero)
 );
 
-reg [31:0] result_buf;
+alu_result_reg alu_result_reg (
+  .clk(clk),
+  .rstn(rstn),
+  .alu_result_in(alu_result),
+  .alu_result_buf(alu_result_buf)
+);
 
-always @ (posedge clk or posedge rst) begin
-  if (rst) result_buf <= 32'b0;
-  else result_buf <= alu_result;
-end
+result_mux result_mux (
+  .src_alu_result_buf(alu_result_buf),
+  .src_alu_result(alu_result),
+  .src_data_buf(data_buf),
+  .result_src(result_src),
+  .result(result)
+);
 
-// Writeback
-
-reg [31:0] result;
-
-always @ (*) begin
-  case(result_src)
-    2'b00: result <= result_buf;
-    2'b01: result <= data;
-    2'b10: result <= alu_result;
-    default: result <= 32'b0;
-  endcase
-end
 
 endmodule

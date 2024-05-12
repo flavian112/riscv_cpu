@@ -31,6 +31,7 @@ always @ (*) begin
         3'b101: alu_op <= funct7[5] ? ALU_OP_SRA : ALU_OP_SRL;
         3'b110: alu_op <= ALU_OP_OR;
         3'b111: alu_op <= ALU_OP_AND;
+        default: alu_op <= ALU_OP_ADD;
       endcase
     end
     7'b0010011: begin // ADDI, SLTI, SLTIU, XORI, ORI, ANDI, SLLI, SRLI, SRAI
@@ -43,29 +44,40 @@ always @ (*) begin
         3'b101: alu_op <= funct7[5] ? ALU_OP_SRA : ALU_OP_SRL;
         3'b110: alu_op <= ALU_OP_OR;
         3'b111: alu_op <= ALU_OP_AND;
+        default: alu_op <= ALU_OP_ADD;
       endcase
     end
     7'b0000011: begin // LB, LH, LW, LBU, LHU
+      alu_op <= ALU_OP_ADD;
     end
     7'b1100111: begin // JALR
+      alu_op <= ALU_OP_ADD;
     end
     7'b0100011: begin // SB, SH, SW
+      alu_op <= ALU_OP_ADD;
     end
     7'b1100011: begin // BEQ, BNE, BLT, BGE, BLTU, BGEU
       if ((funct3 == 3'b000) | (funct3 == 3'b001)) alu_op <= ALU_OP_SUB;
       else if ((funct3 == 3'b100) | (funct3 == 3'b101)) alu_op <= ALU_OP_SLT;
       else if ((funct3 == 3'b110) | (funct3 == 3'b111)) alu_op <= ALU_OP_SLTU; 
+      else alu_op <= ALU_OP_ADD;
     end
     7'b0110111: begin // LUI
+      alu_op <= ALU_OP_ADD;
     end
     7'b0010111: begin // AUIPC
+      alu_op <= ALU_OP_ADD;
     end
     7'b1101111: begin // JAL
+      alu_op <= ALU_OP_ADD;
     end
     7'b0001111: begin // FENCE, FENCE.I
+      alu_op <= ALU_OP_ADD;
     end
     7'b1110011: begin // ECALL, EBREAK, CSRRW, CSRRS, CSRRC, CSRRWI, CSRRSI, CSRRCI
+      alu_op <= ALU_OP_ADD;
     end
+    default: alu_op <= ALU_OP_ADD;
   endcase
 end
 

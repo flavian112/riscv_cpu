@@ -1,9 +1,9 @@
 module control_unit (
- input clk, rst,
- input [6:0] opcode,
- input [2:0] funct3,
- input [6:0] funct7,
+ input clk, 
+ input rstn,
+ input [31:0] instr,
  input alu_zero,
+ output reg [2:0] imm_src,
  output pc_we,
  output reg mem_addr_src,
  output reg mem_we,
@@ -28,16 +28,51 @@ parameter s00_fetch     = 4'h0,
           s10_jalr      = 4'ha,
           s11_br        = 4'hb;
 
+
+parameter INSTRUCTION_FORMAT_UNKNOWN  = 3'b000,
+          INSTRUCTION_FORMAT_R        = 3'b001,
+          INSTRUCTION_FORMAT_I        = 3'b010,
+          INSTRUCTION_FORMAT_S        = 3'b011,
+          INSTRUCTION_FORMAT_B        = 3'b100,
+          INSTRUCTION_FORMAT_U        = 3'b101,
+          INSTRUCTION_FORMAT_J        = 3'b110;
+
+wire [6:0] opcode;
+wire [2:0] funct3;
+wire [6:0] funct7;
+
+assign opcode = instr[6:0];
+assign funct3 = instr[14:12];
+assign funct7 = instr[31:25];
+
+
+always @ (*) begin
+  case (opcode)
+    7'b0110011: imm_src <= INSTRUCTION_FORMAT_R; // ADD, SUB, SLL, SLT, SLTU, XOR, SRL, SRA, OR, AND
+    7'b0010011: imm_src <= INSTRUCTION_FORMAT_I; // ADDI, SLTI, SLTIU, XORI, ORI, ANDI, SLLI, SRLI, SRAI
+    7'b0000011: imm_src <= INSTRUCTION_FORMAT_I; // LB, LH, LW, LBU, LHU
+    7'b1100111: imm_src <= INSTRUCTION_FORMAT_I; // JALR
+    7'b0100011: imm_src <= INSTRUCTION_FORMAT_S; // SB, SH, SW
+    7'b1100011: imm_src <= INSTRUCTION_FORMAT_B; // BEQ, BNE, BLT, BGE, BLTU, BGEU
+    7'b0110111: imm_src <= INSTRUCTION_FORMAT_U; // LUI
+    7'b0010111: imm_src <= INSTRUCTION_FORMAT_U; // AUIPC
+    7'b1101111: imm_src <= INSTRUCTION_FORMAT_J; // JAL
+    7'b0001111: imm_src <= INSTRUCTION_FORMAT_I; // FENCE, FENCE.I
+    7'b1110011: imm_src <= INSTRUCTION_FORMAT_I; // ECALL, EBREAK, CSRRW, CSRRS, CSRRC, CSRRWI, CSRRSI, CSRRCI
+    default:    imm_src <= INSTRUCTION_FORMAT_UNKNOWN;
+  endcase
+end
+
 reg [3:0] state, next_state;
 
-always @ (posedge clk or posedge rst) begin
-  if (rst) state <= s00_fetch;
+always @ (posedge clk) begin
+  if (!rstn) state <= s00_fetch;
   else state <= next_state;
 end
 
 always @ (*) begin
   case(state)
-    s00_fetch:     next_state <= s01_decode;
+    s00_fetch: next_state <= s01_decode;
     s01_decode: case(opcode)
       7'b0000011:  next_state <= s02_mem_addr;
       7'b0100011:  next_state <= s02_mem_addr;
@@ -46,11 +81,12 @@ always @ (*) begin
       7'b1101111:  next_state <= s09_jal;
       7'b1100111:  next_state <= s10_jalr;
       7'b1100011:  next_state <= s11_br;
-      
+      default:     next_state <= s00_fetch;
     endcase
     s02_mem_addr:  case(opcode)
       7'b0000011:  next_state <= s03_mem_read;
       7'b0100011:  next_state <= s05_mem_write; 
+      default:     next_state <= s00_fetch;
     endcase
     s03_mem_read:  next_state <= s04_mem_wb;
     s04_mem_wb:    next_state <= s00_fetch;
@@ -60,7 +96,8 @@ always @ (*) begin
     s08_execute_i: next_state <= s07_alu_wb;
     s09_jal:       next_state <= s07_alu_wb;
     s10_jalr:      next_state <= s07_alu_wb;
-    s11_br:       next_state <= s00_fetch;
+    s11_br:        next_state <= s00_fetch;
+    default:       next_state <= s00_fetch; 
   endcase
 end
 
@@ -70,80 +107,163 @@ reg alu_ctrl;
 
 assign pc_we = ((alu_zero ^ funct3[0] ^ funct3[2]) & branch) | pc_update;
 
-
 always @ (*) begin
-  branch = 1'b0;
-  pc_update = 1'b0;
-  mem_we = 1'b0;
-  rf_we = 1'b0;
-  instr_we = 1'b0;
   case(state)
     s00_fetch: begin
       mem_addr_src <= 1'b0;
-      instr_we      = 1'b1;
       alu_a_src    <= 2'b00;
       alu_b_src    <= 2'b10;
       alu_ctrl     <= 1'b1;
       result_src   <= 2'b10;
-      pc_update     = 1'b1;
+      mem_we       <= 1'b0;
+      rf_we        <= 1'b0;
+      instr_we     <= 1'b1;
+      pc_update    <= 1'b1;
+      branch       <= 1'b0;
     end
     s01_decode: begin
-      alu_a_src <= 2'b01;
-      alu_b_src <= 2'b01;
-      alu_ctrl  <= 1'b1;
+      mem_addr_src <= 1'b0;
+      alu_a_src    <= 2'b01;
+      alu_b_src    <= 2'b01;
+      alu_ctrl     <= 1'b1;
+      result_src   <= 2'b00;
+      mem_we       <= 1'b0;
+      rf_we        <= 1'b0;
+      instr_we     <= 1'b0;
+      pc_update    <= 1'b0;
+      branch       <= 1'b0;
     end
     s02_mem_addr: begin
-      alu_a_src <= 2'b10;
-      alu_b_src <= 2'b01;
-      alu_ctrl  <= 1'b1;
+      mem_addr_src <= 1'b0;
+      alu_a_src    <= 2'b10;
+      alu_b_src    <= 2'b01;
+      alu_ctrl     <= 1'b1;
+      result_src   <= 2'b00;
+      mem_we       <= 1'b0;
+      rf_we        <= 1'b0;
+      instr_we     <= 1'b0;
+      pc_update    <= 1'b0;
+      branch       <= 1'b0;
     end
     s03_mem_read: begin
-      result_src   <= 2'b00;
       mem_addr_src <= 1'b1;
+      alu_a_src    <= 2'b00;
+      alu_b_src    <= 2'b00;
+      alu_ctrl     <= 1'b0;
+      result_src   <= 2'b00;
+      mem_we       <= 1'b0;
+      rf_we        <= 1'b0;
+      instr_we     <= 1'b0;
+      pc_update    <= 1'b0;
+      branch       <= 1'b0;
     end
     s04_mem_wb: begin
-      result_src <= 2'b01;
-      rf_we       = 1'b1;
+      mem_addr_src <= 1'b0;
+      alu_a_src    <= 2'b00;
+      alu_b_src    <= 2'b00;
+      alu_ctrl     <= 1'b0;
+      result_src   <= 2'b01;
+      mem_we       <= 1'b0;
+      rf_we        <= 1'b1;
+      instr_we     <= 1'b0;
+      pc_update    <= 1'b0;
+      branch       <= 1'b0;
     end
     s05_mem_write: begin
-      result_src   <= 2'b00;
       mem_addr_src <= 1'b1;
-      mem_we        = 1'b1;
+      alu_a_src    <= 2'b00;
+      alu_b_src    <= 2'b00;
+      alu_ctrl     <= 1'b0;
+      result_src   <= 2'b00;
+      mem_we       <= 1'b1;
+      rf_we        <= 1'b0;
+      instr_we     <= 1'b0;
+      pc_update    <= 1'b0;
+      branch       <= 1'b0;
     end
     s06_execute_r: begin
-      alu_a_src <= 2'b10;
-      alu_b_src <= 2'b00;
-      alu_ctrl  <= 1'b0;
+      mem_addr_src <= 1'b0;
+      alu_a_src    <= 2'b10;
+      alu_b_src    <= 2'b00;
+      alu_ctrl     <= 1'b0;
+      result_src   <= 2'b00;
+      mem_we       <= 1'b0;
+      rf_we        <= 1'b0;
+      instr_we     <= 1'b0;
+      pc_update    <= 1'b0;
+      branch       <= 1'b0;
     end
     s07_alu_wb: begin
-      result_src <= 2'b00;
-      rf_we       = 1'b1;
+      mem_addr_src <= 1'b0;
+      alu_a_src    <= 2'b00;
+      alu_b_src    <= 2'b00;
+      alu_ctrl     <= 1'b0;
+      result_src   <= 2'b00;
+      mem_we       <= 1'b0;
+      rf_we        <= 1'b1;
+      instr_we     <= 1'b0;
+      pc_update    <= 1'b0;
+      branch       <= 1'b0;
     end
     s08_execute_i: begin
-      alu_a_src <= 2'b10;
-      alu_b_src <= 2'b01;
-      alu_ctrl  <= 1'b0;
+      mem_addr_src <= 1'b0;
+      alu_a_src    <= 2'b10;
+      alu_b_src    <= 2'b01;
+      alu_ctrl     <= 1'b0;
+      result_src   <= 2'b00;
+      mem_we       <= 1'b0;
+      rf_we        <= 1'b0;
+      instr_we     <= 1'b0;
+      pc_update    <= 1'b0;
+      branch       <= 1'b0;
     end
     s09_jal: begin
-      alu_a_src  <= 2'b01;
-      alu_b_src  <= 2'b10;
-      alu_ctrl   <= 1'b1;
-      result_src <= 2'b00;
-      pc_update   = 1'b1;
+      mem_addr_src <= 1'b0;
+      alu_a_src    <= 2'b01;
+      alu_b_src    <= 2'b10;
+      alu_ctrl     <= 1'b1;
+      result_src   <= 2'b00;
+      mem_we       <= 1'b0;
+      rf_we        <= 1'b0;
+      instr_we     <= 1'b0;
+      pc_update    <= 1'b1;
+      branch       <= 1'b0;
     end
     s10_jalr: begin
-      alu_a_src  <= 2'b10;
-      alu_b_src  <= 2'b01;
-      alu_ctrl   <= 1'b1;
-      result_src <= 2'b10;
-      pc_update   = 1'b1;
+      mem_addr_src <= 1'b0;
+      alu_a_src    <= 2'b10;
+      alu_b_src    <= 2'b01;
+      alu_ctrl     <= 1'b1;
+      result_src   <= 2'b10;
+      mem_we       <= 1'b0;
+      rf_we        <= 1'b0;
+      instr_we     <= 1'b0;
+      pc_update    <= 1'b1;
+      branch       <= 1'b0;
     end
     s11_br: begin
-      alu_a_src  <= 2'b10;
-      alu_b_src  <= 2'b00;
-      alu_ctrl   <= 1'b0;
-      result_src <= 2'b00;
-      branch      = 1'b1;
+      mem_addr_src <= 1'b0;
+      alu_a_src    <= 2'b10;
+      alu_b_src    <= 2'b00;
+      alu_ctrl     <= 1'b0;
+      result_src   <= 2'b00;
+      mem_we       <= 1'b0;
+      rf_we        <= 1'b0;
+      instr_we     <= 1'b0;
+      pc_update    <= 1'b0;
+      branch       <= 1'b1;
+    end
+    default: begin
+      mem_addr_src <= 1'b0;
+      alu_a_src    <= 2'b00;
+      alu_b_src    <= 2'b00;
+      alu_ctrl     <= 1'b0;
+      result_src   <= 2'b00;
+      mem_we       <= 1'b0;
+      rf_we        <= 1'b0;
+      instr_we     <= 1'b0;
+      pc_update    <= 1'b0;
+      branch       <= 1'b0;
     end
   endcase
 end

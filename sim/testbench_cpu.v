@@ -5,9 +5,9 @@ module testbench_register_file();
 reg clk;
 reg rst;
 
-cpu uut (
+cpu cpu (
   .clk(clk),
-  .rst(rst)
+  .rstn(!rst)
 );
 
 integer file, r, eof;
