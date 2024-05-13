@@ -19,7 +19,10 @@ control_unit control_unit (
   .alu_op(alu_op),
   .alu_a_src(alu_a_src),
   .alu_b_src(alu_b_src),
-  .rf_we(rf_we)
+  .rf_we(rf_we),
+  .ra1(ra1),
+  .ra2(ra2),
+  .wa3(wa3)
 );
 
 
@@ -40,6 +43,7 @@ wire [2:0] imm_src;
 wire [31:0] data_buf;
 
 wire rf_we;
+wire [4:0] ra1, ra2, wa3;
 wire [31:0] rd1, rd2;
 wire [31:0] rd1_buf, rd2_buf;
 
@@ -106,9 +110,9 @@ register_file register_file (
   .clk(clk),
   .rstn(rstn),
   .we(rf_we),
-  .ra1(instr[19:15]),
-  .ra2(instr[24:20]),
-  .wa3(instr[11:7]),
+  .ra1(ra1),
+  .ra2(ra2),
+  .wa3(wa3),
   .rd1(rd1),
   .rd2(rd2),
   .wd3(result),

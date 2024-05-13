@@ -7,11 +7,13 @@ module mem_addr_src_mux (
   output reg [31:0] mem_addr
 );
 
+`include "include/consts.vh"
+
 always @(*) begin
   case (mem_addr_src)
-    1'b0:    mem_addr <= src_pc;
-    1'b1:    mem_addr <= src_result;
-    default: mem_addr <= 32'b0;
+    MEM_ADDR_SRC_PC:     mem_addr <= src_pc;
+    MEM_ADDR_SRC_RESULT: mem_addr <= src_result;
+    default:             mem_addr <= 32'b0;
   endcase
 end
 

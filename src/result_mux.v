@@ -8,12 +8,14 @@ module result_mux (
   output reg [31:0] result
 );
 
+`include "include/consts.vh"
+
 always @(*) begin
   case (result_src)
-    2'b00:   result <= src_alu_result_buf;
-    2'b01:   result <= src_data_buf;
-    2'b10:   result <= src_alu_result;
-    default: result <= 32'b0;
+    RESULT_SRC_ALU_RESULT_BUF: result <= src_alu_result_buf;
+    RESULT_SRC_DATA_BUF:       result <= src_data_buf;
+    RESULT_SRC_ALU_RESULT:     result <= src_alu_result;
+    default:                   result <= 32'b0;
   endcase
 end
 

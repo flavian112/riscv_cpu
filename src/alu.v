@@ -31,12 +31,14 @@ shift_unit su (
   .result(shift_result)
 );
 
+`include "include/consts.vh"
+
 always @ (*) begin
   case (op[3:2])
-    2'b00: result <= arithmetic_result; // ARITHMETIC
-    2'b01: result <= logic_result;      // LOGIC
-    2'b10: result <= shift_result;      // SHIFT
-    default: result <= 31'b0;
+    ALU_OP_ARITHMETIC: result <= arithmetic_result; // ARITHMETIC
+    ALU_OP_LOGIC:      result <= logic_result;      // LOGIC
+    ALU_OP_SHIFT:      result <= shift_result;      // SHIFT
+    default:           result <= 31'b0;
   endcase
 end
 

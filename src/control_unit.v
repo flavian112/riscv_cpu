@@ -14,6 +14,7 @@ module control_unit (
  output reg instr_we,
 
  output reg rf_we,
+ output [4:0] ra1, ra2, wa3,
 
  output reg [1:0] alu_a_src,
  output reg [1:0] alu_b_src,
@@ -51,6 +52,10 @@ wire [6:0] funct7;
 assign opcode = instr[6:0];
 assign funct3 = instr[14:12];
 assign funct7 = instr[31:25];
+
+assign ra1 = instr[19:15];
+assign ra2 = instr[24:20];
+assign wa3 = instr[11:7];
 
 
 always @ (*) begin
