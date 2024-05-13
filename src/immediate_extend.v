@@ -1,6 +1,7 @@
 module immediate_extend (
   input [31:0] instr,
   input [2:0] imm_src,
+  
   output reg [31:0] imm
 );
 

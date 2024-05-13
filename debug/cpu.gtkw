@@ -1,14 +1,14 @@
 [*]
 [*] GTKWave Analyzer v3.4.0 (w)1999-2022 BSI
-[*] Sun May 12 19:27:12 2024
+[*] Mon May 13 05:19:11 2024
 [*]
 [dumpfile] "/Users/flavian/Documents/hobbies/electronics/projects/riscv_cpu/build/waveform_cpu.vcd"
-[dumpfile_mtime] "Sun May 12 19:21:04 2024"
-[dumpfile_size] 75506
+[dumpfile_mtime] "Mon May 13 05:16:41 2024"
+[dumpfile_size] 75516
 [savefile] "/Users/flavian/Documents/hobbies/electronics/projects/riscv_cpu/debug/cpu.gtkw"
-[timestart] 277300
+[timestart] 3600
 [size] 1512 916
-[pos] -1 0
+[pos] 0 0
 *-15.000000 27100 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] testbench_register_file.
 [treeopen] testbench_register_file.cpu.

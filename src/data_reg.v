@@ -1,6 +1,7 @@
 module data_reg (
   input clk,
   input rstn,
+  
   input [31:0] data_in,
   output reg [31:0] data_buf
 );

@@ -1,7 +1,9 @@
 module shift_unit (
   input signed [31:0] a,
   input  [4:0] b,
+
   input [1:0] op,
+  
   output reg [31:0] result
 );
 

@@ -1,16 +1,18 @@
 module memory_interface (
   input clk,
   input rstn,
+
   input we,
   input [31:0] addr,
-  output reg [31:0] rd,
-  input [31:0] wd
+  input [31:0] wd,
+
+  output reg [31:0] rd
 );
 
 reg ram_we;
 wire [31:0] ram_read_data, rom_read_data;
 
-ram #(.N(32), .SIZE(1024)) ram(
+ram #(.N(32), .SIZE(16)) ram(
   .clk(clk),
   .rst(!rstn),
   .we(ram_we),
@@ -19,7 +21,7 @@ ram #(.N(32), .SIZE(1024)) ram(
   .data_write(wd)
 );
 
-rom #(.N(32), .SIZE(1024)) rom(
+rom #(.N(32), .SIZE(32)) rom(
   .clk(clk),
   .addr(addr),
   .data_read(rom_read_data)

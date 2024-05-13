@@ -1,5 +1,7 @@
 module alu_result_reg (
-  input clk, rstn,
+  input clk, 
+  input rstn,
+  
   input [31:0] alu_result_in,
   output reg [31:0] alu_result_buf
 );

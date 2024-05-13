@@ -1,18 +1,25 @@
 module control_unit (
  input clk, 
  input rstn,
+
  input [31:0] instr,
  input alu_zero,
+
  output reg [2:0] imm_src,
  output pc_we,
+
  output reg mem_addr_src,
  output reg mem_we,
+
  output reg instr_we,
- output reg [1:0] result_src,
- output [3:0] alu_op,
+
+ output reg rf_we,
+
  output reg [1:0] alu_a_src,
  output reg [1:0] alu_b_src,
- output reg rf_we
+ output [3:0] alu_op,
+
+ output reg [1:0] result_src
 );
 
 parameter s00_fetch     = 4'h0,
@@ -268,7 +275,7 @@ always @ (*) begin
   endcase
 end
 
-alu_op_decode aod (
+alu_op_decode alu_op_decode (
   .opcode(opcode),
   .alu_ctrl(alu_ctrl),
   .funct3(funct3),

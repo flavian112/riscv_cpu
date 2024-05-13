@@ -1,5 +1,8 @@
 module instruction_reg (
-  input clk, rstn, we,
+  input clk, 
+  input rstn, 
+  
+  input we,
   input [31:0] pc_in, instr_in,
   output reg [31:0] pc_buf, instr
 );

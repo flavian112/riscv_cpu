@@ -1,7 +1,12 @@
 module register_file_reg (
-  input clk, rstn,
-  input [31:0] rd1_in, rd2_in,
-  output reg [31:0] rd1_buf, rd2_buf
+  input clk, 
+  input rstn,
+
+  input [31:0] rd1_in, 
+  input [31:0] rd2_in,
+  
+  output reg [31:0] rd1_buf,
+  output reg [31:0] rd2_buf
 );
 
 always @ (posedge clk) begin

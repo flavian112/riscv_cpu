@@ -17,7 +17,7 @@ reg [8:0] memory [SIZE-1:0];
 assign data_read = { memory[addr + 3], memory[addr + 2], memory[addr + 1], memory[addr + 0] };
 
 
-always @(posedge clk /*or posedge rst*/) begin
+always @(posedge clk) begin
   if (we) begin
     { memory[addr + 3], memory[addr + 2], memory[addr + 1], memory[addr + 0] } = data_write;
   end

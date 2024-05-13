@@ -1,8 +1,10 @@
 module alu_op_decode (
   input [6:0] opcode,
-  input alu_ctrl,
   input [2:0] funct3,
   input [6:0] funct7,
+  
+  input alu_ctrl,
+  
   output reg [3:0] alu_op
 );
 
@@ -23,27 +25,27 @@ always @ (*) begin
   else case (opcode)
     7'b0110011: begin // ADD, SUB, SLL, SLT, SLTU, XOR, SRL, SRA, OR, AND
       case (funct3)
-        3'b000: alu_op <= funct7[5] ? ALU_OP_SUB : ALU_OP_ADD;
-        3'b001: alu_op <= ALU_OP_SLL;
-        3'b010: alu_op <= ALU_OP_SLT;
-        3'b011: alu_op <= ALU_OP_SLTU;
-        3'b100: alu_op <= ALU_OP_XOR;
-        3'b101: alu_op <= funct7[5] ? ALU_OP_SRA : ALU_OP_SRL;
-        3'b110: alu_op <= ALU_OP_OR;
-        3'b111: alu_op <= ALU_OP_AND;
+        3'b000:  alu_op <= funct7[5] ? ALU_OP_SUB : ALU_OP_ADD;
+        3'b001:  alu_op <= ALU_OP_SLL;
+        3'b010:  alu_op <= ALU_OP_SLT;
+        3'b011:  alu_op <= ALU_OP_SLTU;
+        3'b100:  alu_op <= ALU_OP_XOR;
+        3'b101:  alu_op <= funct7[5] ? ALU_OP_SRA : ALU_OP_SRL;
+        3'b110:  alu_op <= ALU_OP_OR;
+        3'b111:  alu_op <= ALU_OP_AND;
         default: alu_op <= ALU_OP_ADD;
       endcase
     end
     7'b0010011: begin // ADDI, SLTI, SLTIU, XORI, ORI, ANDI, SLLI, SRLI, SRAI
       case (funct3)
-        3'b000: alu_op <= ALU_OP_ADD;
-        3'b001: alu_op <= ALU_OP_SLL;
-        3'b010: alu_op <= ALU_OP_SLT;
-        3'b011: alu_op <= ALU_OP_SLTU;
-        3'b100: alu_op <= ALU_OP_XOR;
-        3'b101: alu_op <= funct7[5] ? ALU_OP_SRA : ALU_OP_SRL;
-        3'b110: alu_op <= ALU_OP_OR;
-        3'b111: alu_op <= ALU_OP_AND;
+        3'b000:  alu_op <= ALU_OP_ADD;
+        3'b001:  alu_op <= ALU_OP_SLL;
+        3'b010:  alu_op <= ALU_OP_SLT;
+        3'b011:  alu_op <= ALU_OP_SLTU;
+        3'b100:  alu_op <= ALU_OP_XOR;
+        3'b101:  alu_op <= funct7[5] ? ALU_OP_SRA : ALU_OP_SRL;
+        3'b110:  alu_op <= ALU_OP_OR;
+        3'b111:  alu_op <= ALU_OP_AND;
         default: alu_op <= ALU_OP_ADD;
       endcase
     end

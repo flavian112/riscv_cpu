@@ -17,6 +17,4 @@ end
 
 assign data_read = {memory[addr + 3], memory[addr + 2], memory[addr + 1], memory[addr + 0] };
 
-
-
 endmodule

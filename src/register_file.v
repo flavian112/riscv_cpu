@@ -1,8 +1,18 @@
 module register_file (
-  input clk, rstn, we,
-  input [4:0] ra1, ra2, wa3,
+  input clk, 
+  input rstn, 
+  
+  input we,
+  input [4:0] ra1, 
+  input [4:0] ra2, 
+  input [4:0] wa3,
+
   input [31:0] wd3,
-  output [31:0] rd1, rd2
+
+  output [31:0] rd1, 
+  output [31:0] rd2,
+
+  output [31:0] dbg_t6
 );
 
 reg [31:0] regs[31:1];
@@ -73,6 +83,8 @@ assign reg_x28_t3   = regs[28];
 assign reg_x29_t4   = regs[29];
 assign reg_x30_t5   = regs[30];
 assign reg_x31_t6   = regs[31];
+
+assign dbg_t6 = reg_x31_t6;
 
 
 assign rd1 = ra1 == 0 ? 32'b0 : regs[ra1];

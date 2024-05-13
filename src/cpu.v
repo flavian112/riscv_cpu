@@ -1,6 +1,7 @@
 module cpu (
   input clk,
-  input rstn
+  input rstn,
+  output [31:0] dbg_t6
 );
 
 
@@ -23,43 +24,34 @@ control_unit control_unit (
 
 
 wire [31:0] pc, pc_buf;
-
-wire [31:0] mem_addr;
-
-wire mem_addr_src;
-
-wire [31:0] mem_rd;
-
-wire mem_we;
-wire instr_we;
-
-wire [31:0] instr;
-
-wire [31:0] data_buf;
 wire pc_we;
 
-wire rf_we;
+wire [31:0] mem_addr;
+wire mem_addr_src;
+wire [31:0] mem_rd;
+wire mem_we;
 
-wire [31:0] rd1, rd2;
-wire [31:0] rd1_buf, rd2_buf;
-
-wire [31:0] alu_a, alu_b;
+wire instr_we;
+wire [31:0] instr;
 
 wire [31:0] imm;
 wire [2:0] imm_src;
 
+wire [31:0] data_buf;
+
+wire rf_we;
+wire [31:0] rd1, rd2;
+wire [31:0] rd1_buf, rd2_buf;
+
+wire [31:0] alu_a, alu_b;
 wire [1:0] alu_a_src;
 wire [1:0] alu_b_src;
-
 wire [3:0] alu_op;
-
 wire [31:0] alu_result;
 wire alu_zero;
-
 wire [31:0] alu_result_buf;
 
 wire [1:0] result_src;
-
 wire [31:0] result;
 
 
@@ -119,7 +111,8 @@ register_file register_file (
   .wa3(instr[11:7]),
   .rd1(rd1),
   .rd2(rd2),
-  .wd3(result)
+  .wd3(result),
+  .dbg_t6(dbg_t6)
 );
 
 register_file_reg register_file_reg (
@@ -168,6 +161,5 @@ result_mux result_mux (
   .result_src(result_src),
   .result(result)
 );
-
 
 endmodule

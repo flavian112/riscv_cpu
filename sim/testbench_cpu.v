@@ -7,7 +7,8 @@ reg rst;
 
 cpu cpu (
   .clk(clk),
-  .rstn(!rst)
+  .rstn(!rst),
+  .dbg_t6(_)
 );
 
 integer file, r, eof;
@@ -55,7 +56,7 @@ initial begin
   while (1) begin
     @(posedge clk);
     clk_cycle_count = clk_cycle_count + 1;
-    if (clk_cycle_count == 100) $finish;
+    if (clk_cycle_count == 1000) $finish;
   end
 end
 
