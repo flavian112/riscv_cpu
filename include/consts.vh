@@ -106,3 +106,14 @@ parameter FUNCT7_ALU_SRA = 7'b0100000;
 
 parameter ALU_CTRL_OP  = 1'b0;
 parameter ALU_CTRL_ADD = 1'b1;
+
+parameter MEM_WE_ENABLE     = 1'b1;
+parameter MEM_WE_DISABLE    = 1'b0;
+parameter RF_WE_ENABLE      = 1'b1;
+parameter RF_WE_DISABLE     = 1'b0;
+parameter INSTR_WE_ENABLE   = 1'b1;
+parameter INSTR_WE_DISABLE  = 1'b0;
+parameter PC_UPDATE_ENABLE  = 1'b1;
+parameter PC_UPDATE_DISABLE = 1'b0;
+parameter BRANCH_ENABLE     = 1'b1;
+parameter BRANCH_DISABLE    = 1'b0;

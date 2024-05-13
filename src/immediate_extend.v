@@ -5,15 +5,16 @@ module immediate_extend (
   output reg [31:0] imm
 );
 
+`include "include/consts.vh"
 
 always @ (*) begin
   case (imm_src)
-    3'b010:  imm <= { {21{instr[31]}}, instr[30:20] };                                // I
-    3'b011:  imm <= { {21{instr[31]}}, instr[30:25], instr[11:7] };                   // S
-    3'b100:  imm <= { {20{instr[31]}}, instr[7], instr[30:25], instr[11:8], 1'b0 };   // B
-    3'b101:  imm <= { instr[31:12], 12'b0 };                                          // U
-    3'b110:  imm <= { {12{instr[31]}}, instr[19:12], instr[20], instr[30:21], 1'b0 }; // J
-    default: imm <= 32'b0;                                                            // Unknown
+    INSTR_FORMAT_I:  imm <= { {21{instr[31]}}, instr[30:20] };                                // I
+    INSTR_FORMAT_S:  imm <= { {21{instr[31]}}, instr[30:25], instr[11:7] };                   // S
+    INSTR_FORMAT_B:  imm <= { {20{instr[31]}}, instr[7], instr[30:25], instr[11:8], 1'b0 };   // B
+    INSTR_FORMAT_U:  imm <= { instr[31:12], 12'b0 };                                          // U
+    INSTR_FORMAT_J:  imm <= { {12{instr[31]}}, instr[19:12], instr[20], instr[30:21], 1'b0 }; // J
+    default:         imm <= 32'b0;                                                            // Unknown
   endcase
 end
 
