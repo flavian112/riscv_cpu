@@ -10,7 +10,7 @@ module pc_reg (
 
 parameter PC_INITIAL = 32'h0001_0000;
 
-always @ (posedge clk) begin
+always @ (posedge clk or negedge rstn) begin
   if (!rstn) pc <= PC_INITIAL;
   else if (we) pc <= pc_in;
 end

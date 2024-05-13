@@ -7,7 +7,7 @@ module instruction_reg (
   output reg [31:0] pc_buf, instr
 );
 
-always @ (posedge clk) begin
+always @ (posedge clk or negedge rstn) begin
   if (!rstn) begin
     pc_buf <= 32'b0;
     instr  <= 32'b0;

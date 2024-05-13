@@ -45,7 +45,7 @@ The board used in this project is a [Tang Nano 9K](https://wiki.sipeed.com/hardw
 ## Currently Supported Instructions
 
 * R-type: add, sub, and, or, xor, sll, srl, sra, slt, sltu
-* I-type: addi, andi, ori, xori, slti, sltiu, slli, srli, srai
+* I-type: addi, andi, ori, xori, slti, sltiu, slli, srli, srai, lw
 * S-type: sw
 * B-type: beq, bne, blt, bge, bltu, bgeu
 * U-type:

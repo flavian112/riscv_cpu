@@ -72,7 +72,7 @@ end
 
 reg [3:0] state, next_state;
 
-always @ (posedge clk) begin
+always @ (posedge clk or negedge rstn) begin
   if (!rstn) state <= s00_fetch;
   else state <= next_state;
 end

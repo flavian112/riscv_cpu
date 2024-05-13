@@ -9,7 +9,7 @@ module clock_divider #(
 
 reg [31:0] counter = 0;
 
-always @(posedge clk) begin
+always @(posedge clk or negedge rstn) begin
   if (!rstn) begin
     counter <= 0;
     clk_div <= 0;

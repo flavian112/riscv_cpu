@@ -9,7 +9,7 @@ module register_file_reg (
   output reg [31:0] rd2_buf
 );
 
-always @ (posedge clk) begin
+always @ (posedge clk or negedge rstn) begin
   if (!rstn) begin
     rd1_buf <= 32'b0;
     rd2_buf <= 32'b0;
