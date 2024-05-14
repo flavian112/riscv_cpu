@@ -27,7 +27,7 @@ wire [31:0] rd1, rd2;
 wire [31:0] rd1_buf, rd2_buf;
 
 wire [31:0] alu_a, alu_b;
-wire [1:0] alu_a_src;
+wire [2:0] alu_a_src;
 wire [1:0] alu_b_src;
 wire [3:0] alu_op;
 wire [31:0] alu_result;
@@ -131,6 +131,7 @@ register_file_reg register_file_reg (
 alu_a_src_mux alu_a_src_mux(
   .src_pc(pc),
   .src_pc_buf(pc_buf),
+  .src_rd1(rd1),
   .src_rd1_buf(rd1_buf),
   .alu_a_src(alu_a_src),
   .alu_a(alu_a)

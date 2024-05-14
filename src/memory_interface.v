@@ -12,7 +12,7 @@ module memory_interface (
 reg ram_we;
 wire [31:0] ram_read_data, rom_read_data;
 
-ram #(.N(32), .SIZE(16)) ram(
+ram #(.N(32), .SIZE(1024)) ram(
   .clk(clk),
   .rst(!rstn),
   .we(ram_we),
@@ -21,7 +21,7 @@ ram #(.N(32), .SIZE(16)) ram(
   .data_write(wd)
 );
 
-rom #(.N(32), .SIZE(32)) rom(
+rom #(.N(32), .SIZE(1024)) rom(
   .clk(clk),
   .addr(addr),
   .data_read(rom_read_data)
@@ -43,17 +43,17 @@ rom #(.N(32), .SIZE(32)) rom(
 
 always @(*) begin
   if (addr[31:16] >= 16'h0001 && addr[31:16] <= 16'h000F) begin
-    ram_we <= 0;
-    rd <= rom_read_data;
+    ram_we = 0;
+    rd = rom_read_data;
   end else if (addr[31:16] >= 16'h0010 && addr[31:16] <= 16'hFF0F) begin
-    ram_we <= we;
-    rd <= ram_read_data;
+    ram_we = we;
+    rd = ram_read_data;
   end else if (addr[31:16] >= 16'hFF10 && addr[31:16] <= 16'hFFFF) begin
-    ram_we <= 0;
-    rd <= 0;
+    ram_we = 0;
+    rd = 0;
   end else begin
-    ram_we <= 0;
-    rd <= 0;
+    ram_we = 0;
+    rd = 0;
   end
 end
 

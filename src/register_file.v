@@ -91,7 +91,7 @@ assign rd1 = ra1 == 0 ? 32'b0 : regs[ra1];
 assign rd2 = ra2 == 0 ? 32'b0 : regs[ra2];
 
 always @ (posedge clk) begin
-  if (we && (wa3 != 0)) regs[wa3] = wd3;
+  if (we && (wa3 != 0)) regs[wa3] <= wd3;
 end
 
 endmodule

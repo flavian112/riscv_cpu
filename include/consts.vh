@@ -1,7 +1,8 @@
-parameter ALU_A_SRC_PC      = 2'b00;
-parameter ALU_A_SRC_PC_BUF  = 2'b01;
-parameter ALU_A_SRC_RD1_BUF = 2'b10;
-parameter ALU_A_SRC_0       = 2'b11;
+parameter ALU_A_SRC_PC      = 3'b000;
+parameter ALU_A_SRC_PC_BUF  = 3'b001;
+parameter ALU_A_SRC_RD1_BUF = 3'b010;
+parameter ALU_A_SRC_RD1     = 3'b011;
+parameter ALU_A_SRC_0       = 3'b100;
 
 parameter ALU_B_SRC_RD2_BUF = 2'b00;
 parameter ALU_B_SRC_IMM     = 2'b01;

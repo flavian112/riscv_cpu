@@ -35,10 +35,10 @@ shift_unit su (
 
 always @ (*) begin
   case (op[3:2])
-    ALU_OP_ARITHMETIC: result <= arithmetic_result; // ARITHMETIC
-    ALU_OP_LOGIC:      result <= logic_result;      // LOGIC
-    ALU_OP_SHIFT:      result <= shift_result;      // SHIFT
-    default:           result <= 31'b0;
+    ALU_OP_ARITHMETIC: result = arithmetic_result; // ARITHMETIC
+    ALU_OP_LOGIC:      result = logic_result;      // LOGIC
+    ALU_OP_SHIFT:      result = shift_result;      // SHIFT
+    default:           result = 31'b0;
   endcase
 end
 

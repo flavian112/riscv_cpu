@@ -11,10 +11,10 @@ module shift_unit (
 
 always @ (*) begin
   case (op)
-    SHIFT_OP_SLL: result <= a << b;   // SLL
-    SHIFT_OP_SRL: result <= a >> b;   // SRL
-    SHIFT_OP_SRA: result <= a >>> b;  // SRA
-    default:      result <= 32'b0;
+    SHIFT_OP_SLL: result = a << b;   // SLL
+    SHIFT_OP_SRL: result = a >> b;   // SRL
+    SHIFT_OP_SRA: result = a >>> b;  // SRA
+    default:      result = 32'b0;
   endcase
 end
 

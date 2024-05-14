@@ -11,10 +11,10 @@ module logic_unit (
   
 always @ (*) begin
   case (op)
-    LOGIC_OP_AND: result <= a & b; // AND
-    LOGIC_OP_OR:  result <= a | b; // OR
-    LOGIC_OP_XOR: result <= a ^ b; // XOR
-    default:      result <= 32'b0;
+    LOGIC_OP_AND: result = a & b; // AND
+    LOGIC_OP_OR:  result = a | b; // OR
+    LOGIC_OP_XOR: result = a ^ b; // XOR
+    default:      result = 32'b0;
   endcase
 end
 

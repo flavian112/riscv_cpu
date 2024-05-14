@@ -16,11 +16,11 @@ assign b_signed = b;
 
 always @ (*) begin
   case (op)
-    ARITHMETIC_OP_ADD:  result <= a + b;                               // ADD
-    ARITHMETIC_OP_SUB:  result <= a - b;                               // SUB
-    ARITHMETIC_OP_SLT:  result <= { {31{1'b0}}, a_signed < b_signed }; // SLT
-    ARITHMETIC_OP_SLTU: result <= { {31{1'b0}}, a < b };               // SLTU
-    default:            result <= 32'b0;
+    ARITHMETIC_OP_ADD:  result = a + b;                               // ADD
+    ARITHMETIC_OP_SUB:  result = a - b;                               // SUB
+    ARITHMETIC_OP_SLT:  result = { {31{1'b0}}, a_signed < b_signed }; // SLT
+    ARITHMETIC_OP_SLTU: result = { {31{1'b0}}, a < b };               // SLTU
+    default:            result = 32'b0;
   endcase
 end
 
