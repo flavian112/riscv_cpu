@@ -5,27 +5,6 @@ module cpu (
 );
 
 
-control_unit control_unit (
-  .clk(clk),
-  .rstn(rstn),
-  .instr(instr),
-  .imm_src(imm_src),
-  .alu_zero(alu_zero),
-  .pc_we(pc_we),
-  .mem_addr_src(mem_addr_src),
-  .mem_we(mem_we),
-  .instr_we(instr_we),
-  .result_src(result_src),
-  .alu_op(alu_op),
-  .alu_a_src(alu_a_src),
-  .alu_b_src(alu_b_src),
-  .rf_we(rf_we),
-  .ra1(ra1),
-  .ra2(ra2),
-  .wa3(wa3)
-);
-
-
 wire [31:0] pc, pc_buf;
 wire pc_we;
 
@@ -57,6 +36,27 @@ wire [31:0] alu_result_buf;
 
 wire [1:0] result_src;
 wire [31:0] result;
+
+
+control_unit control_unit (
+  .clk(clk),
+  .rstn(rstn),
+  .instr(instr),
+  .imm_src(imm_src),
+  .alu_zero(alu_zero),
+  .pc_we(pc_we),
+  .mem_addr_src(mem_addr_src),
+  .mem_we(mem_we),
+  .instr_we(instr_we),
+  .result_src(result_src),
+  .alu_op(alu_op),
+  .alu_a_src(alu_a_src),
+  .alu_b_src(alu_b_src),
+  .rf_we(rf_we),
+  .ra1(ra1),
+  .ra2(ra2),
+  .wa3(wa3)
+);
 
 
 pc_reg pc_reg (
