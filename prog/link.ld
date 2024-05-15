@@ -43,7 +43,7 @@ SECTIONS
     .stack (NOLOAD) :
     {
         _stack_start = .;
-        . += 0x10; /* Adjust the size as needed */
+        . += 0x80; /* Adjust the size as needed */
         _stack_end = .;
     } > RAM
 
@@ -51,7 +51,7 @@ SECTIONS
     .heap (NOLOAD) :
     {
         _heap_start = .;
-        . += 0x10; /* Adjust the size as needed */
+        . += 0x80; /* Adjust the size as needed */
         _heap_end = .;
     } > RAM
 }

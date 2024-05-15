@@ -3,7 +3,7 @@ module rom #(
   parameter SIZE = 1024
 )(
     input clk,
-    input [log2(SIZE/4)-1:0] addr,
+    input [N-1:0] addr,
     output reg [N-1:0] data_read
 );
 
@@ -11,10 +11,10 @@ module rom #(
 
 
 //(* RAM_STYLE="BLOCK" *)
-reg [N-1:0] mem [SIZE-1:0];
+reg [N-1:0] mem [0:SIZE-1];
 
 initial begin
-  $readmemh("build/rom.hex", mem, 0, SIZE/4-1);
+  $readmemh("build/rom.hex", mem, 0, SIZE-1);
 end
 
 always @(negedge clk) begin

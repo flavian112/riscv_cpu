@@ -5,7 +5,7 @@ module ram #(
     input clk,
     input rstn,
     input we,
-    input [log2(SIZE/4)-1:0] addr,
+    input [N-1:0] addr,
     input [N-1:0] data_write,
     output reg [N-1:0] data_read
 );
@@ -13,7 +13,7 @@ module ram #(
 `include "include/log2.vh"
 
 //(* RAM_STYLE="BLOCK" *)
-reg [N-1:0] mem [SIZE-1:0];
+reg [N-1:0] mem [0:SIZE-1];
 
 always @(posedge clk) begin
   if (we) mem[addr >> 2] <= data_write; 

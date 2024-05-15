@@ -11,19 +11,20 @@ module memory_interface (
 
 reg ram_we;
 wire [31:0] ram_read_data, rom_read_data;
+reg [31:0] rel_addr;
 
 ram #(.N(32), .SIZE(1024)) ram(
   .clk(clk),
   .rstn(rstn),
   .we(ram_we),
-  .addr(addr),
+  .addr(rel_addr),
   .data_read(ram_read_data),
   .data_write(wd)
 );
 
 rom #(.N(32), .SIZE(1024)) rom(
   .clk(clk),
-  .addr(addr),
+  .addr(rel_addr),
   .data_read(rom_read_data)
 );
 
@@ -42,18 +43,18 @@ rom #(.N(32), .SIZE(1024)) rom(
 
 
 always @(*) begin
-  if (addr[31:16] >= 16'h0001 && addr[31:16] <= 16'h000F) begin
+  if (         addr >= 32'h0001_0000 && addr <= 32'h000F_0000) begin
     ram_we = 0;
     rd = rom_read_data;
-  end else if (addr[31:16] >= 16'h0010 && addr[31:16] <= 16'hFF0F) begin
+    rel_addr = addr - 32'h0001_0000;
+  end else if (addr >= 32'h0010_0000 && addr <= 32'hFF0F_0000) begin
     ram_we = we;
     rd = ram_read_data;
-  end else if (addr[31:16] >= 16'hFF10 && addr[31:16] <= 16'hFFFF) begin
-    ram_we = 0;
-    rd = 0;
+    rel_addr = addr - 32'h0010_0000;
   end else begin
     ram_we = 0;
     rd = 0;
+    rel_addr = 0;
   end
 end
 
