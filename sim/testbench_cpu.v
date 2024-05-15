@@ -56,7 +56,7 @@ initial begin
   while (1) begin
     @(posedge clk);
     clk_cycle_count = clk_cycle_count + 1;
-    if (clk_cycle_count == 1000) $finish;
+    if (clk_cycle_count == 10000) $finish;
   end
 end
 

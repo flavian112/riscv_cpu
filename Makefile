@@ -47,7 +47,7 @@ RISCV_LD = $(RISCV_TOOLCHAIN)-ld
 RISCV_OBJCOPY = $(RISCV_TOOLCHAIN)-objcopy
 
 RISCV_ASFLAGS = -march=rv32i -mabi=ilp32
-RISCV_CFLAGS = -march=rv32i -mabi=ilp32 -O2 -Wall
+RISCV_CFLAGS = -march=rv32i -mabi=ilp32
 RISCV_LDFLAGS = -T prog/link.ld -m elf32lriscv
 
 PROG_SOURCE_DIR = prog/src
@@ -150,7 +150,7 @@ $(PROG_BINARY_FILE): $(PROG_ELF_FILE)
 
 # Convert the binary file to a hex file
 $(PROG_ROM_FILE): $(PROG_BINARY_FILE)
-	xxd -g 1 -c 1 -p $< > $@
+	xxd -g 4 -c 4 -p $< | awk '{print substr($$0,7,2) substr($$0,5,2) substr($$0,3,2) substr($$0,1,2)}' > $@
 
 # Create the build directory
 $(BUILD_DIR):

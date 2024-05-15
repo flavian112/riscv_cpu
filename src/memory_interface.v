@@ -14,7 +14,7 @@ wire [31:0] ram_read_data, rom_read_data;
 
 ram #(.N(32), .SIZE(1024)) ram(
   .clk(clk),
-  .rst(!rstn),
+  .rstn(rstn),
   .we(ram_we),
   .addr(addr),
   .data_read(ram_read_data),

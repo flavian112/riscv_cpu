@@ -1,21 +1,22 @@
 [*]
 [*] GTKWave Analyzer v3.4.0 (w)1999-2022 BSI
-[*] Mon May 13 05:19:11 2024
+[*] Wed May 15 06:26:49 2024
 [*]
 [dumpfile] "/Users/flavian/Documents/hobbies/electronics/projects/riscv_cpu/build/waveform_cpu.vcd"
-[dumpfile_mtime] "Mon May 13 05:16:41 2024"
-[dumpfile_size] 75516
+[dumpfile_mtime] "Wed May 15 06:25:06 2024"
+[dumpfile_size] 6805714
 [savefile] "/Users/flavian/Documents/hobbies/electronics/projects/riscv_cpu/debug/cpu.gtkw"
-[timestart] 3600
-[size] 1512 916
-[pos] 0 0
-*-15.000000 27100 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[timestart] 36861700
+[size] 1512 945
+[pos] -1 -1
+*-15.000000 59800 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] testbench_register_file.
 [treeopen] testbench_register_file.cpu.
+[treeopen] testbench_register_file.cpu.control_unit.
 [sst_width] 253
 [signals_width] 390
 [sst_expanded] 1
-[sst_vpaned_height] 278
+[sst_vpaned_height] 288
 @28
 testbench_register_file.clk
 testbench_register_file.rst
@@ -30,6 +31,11 @@ testbench_register_file.cpu.control_unit.state[3:0]
 testbench_register_file.cpu.instr_we
 @22
 testbench_register_file.cpu.instr[31:0]
+@28
+testbench_register_file.cpu.control_unit.opcode[6:0]
+testbench_register_file.cpu.control_unit.funct3[2:0]
+@22
+testbench_register_file.cpu.control_unit.funct7[6:0]
 @200
 -
 @22
@@ -45,8 +51,9 @@ testbench_register_file.cpu.pc_we
 -
 @22
 testbench_register_file.cpu.mem_addr[31:0]
-testbench_register_file.cpu.mem_rd[31:0]
 @23
+testbench_register_file.cpu.mem_rd[31:0]
+@22
 testbench_register_file.cpu.rd2_buf[31:0]
 @28
 testbench_register_file.cpu.mem_we
@@ -61,13 +68,12 @@ testbench_register_file.cpu.alu_a[31:0]
 testbench_register_file.cpu.alu_b[31:0]
 @28
 [color] 5
-testbench_register_file.cpu.alu_a_src[1:0]
-[color] 5
 testbench_register_file.cpu.alu_b_src[1:0]
 @22
 [color] 5
 testbench_register_file.cpu.alu_op[3:0]
 @28
+testbench_register_file.cpu.control_unit.alu_ctrl
 testbench_register_file.cpu.alu_zero
 @22
 [color] 5

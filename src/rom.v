@@ -3,18 +3,22 @@ module rom #(
   parameter SIZE = 1024
 )(
     input clk,
-    input [log2(SIZE)-1:0] addr,
-    output [N-1:0] data_read
+    input [log2(SIZE/4)-1:0] addr,
+    output reg [N-1:0] data_read
 );
 
 `include "include/log2.vh"
 
-reg [7:0] memory [0:SIZE-1];
+
+//(* RAM_STYLE="BLOCK" *)
+reg [N-1:0] mem [SIZE-1:0];
 
 initial begin
-  $readmemh("build/rom.hex", memory, 0, SIZE-1);
+  $readmemh("build/rom.hex", mem, 0, SIZE/4-1);
 end
 
-assign data_read = {memory[addr + 3], memory[addr + 2], memory[addr + 1], memory[addr + 0] };
+always @(negedge clk) begin
+  data_read <= mem[addr >> 2];
+end
 
 endmodule

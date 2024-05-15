@@ -104,7 +104,7 @@ always @ (*) begin
     STATE_JAL:       next_state = STATE_ALU_WB;
     STATE_JALR:      next_state = STATE_ALU_WB;
     STATE_LUI:       next_state = STATE_ALU_WB;
-    STATE_AUIPC:     next_state = STATE_FETCH;
+    STATE_AUIPC:     next_state = STATE_ALU_WB;
     STATE_BRANCH:    next_state = STATE_FETCH;
     default:         next_state = STATE_FETCH; 
   endcase
@@ -193,9 +193,6 @@ always @ (*) begin
       alu_a_src    = ALU_A_SRC_PC_BUF;
       alu_b_src    = ALU_B_SRC_IMM;
       alu_ctrl     = ALU_CTRL_ADD;
-      result_src   = RESULT_SRC_ALU_RESULT_BUF;
-      pc_update    = PC_UPDATE_ENABLE;
-
     end
     STATE_BRANCH: begin
       alu_a_src    = ALU_A_SRC_RD1_BUF;

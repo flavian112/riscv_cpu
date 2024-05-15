@@ -1,16 +1,67 @@
-OUTPUT_ARCH( "riscv" )
-ENTRY(_start)
+/* Linker script for RISC-V */
 
+/* Define memory regions */
 MEMORY
 {
-  ROM (rx)  : ORIGIN = 0x00010000, LENGTH = 0xF0000    # 0x0001_0000 - 0x000F_FFFF
-  RAM (rwx) : ORIGIN = 0x00100000, LENGTH = 0xFEFFFFF  # 0x0010_0000 - 0xFF0F_FFFF
+    ROM (rx)  : ORIGIN = 0x00010000, LENGTH = 0x400  /* 1024 bytes for ROM */
+    RAM (rwx) : ORIGIN = 0x00100000, LENGTH = 0x400  /* 1024 bytes for RAM */
 }
 
+ENTRY(_start)
+
+/* Define sections */
 SECTIONS
 {
-  .text  : { *(.text) }  > ROM
-  .data  : { *(.data) }  > RAM
-  .bss   : { *(.bss) }   > RAM
-  .stack : { *(.stack) } > RAM
+    /* Code section */
+    .text :
+    {
+        KEEP(*(.init))
+        KEEP(*(.text))
+        KEEP(*(.fini))
+        KEEP(*(.rodata))
+        _etext = .;
+    } > ROM
+
+    /* Initialized data section */
+    .data : AT(_etext)
+    {
+        _sdata = .;
+        KEEP(*(.data))
+        _edata = .;
+    } > RAM
+
+    /* Uninitialized data section */
+    .bss :
+    {
+        _sbss = .;
+        KEEP(*(.bss))
+        KEEP(*(COMMON))
+        _ebss = .;
+    } > RAM
+
+    /* Stack section */
+    .stack (NOLOAD) :
+    {
+        _stack_start = .;
+        . += 0x10; /* Adjust the size as needed */
+        _stack_end = .;
+    } > RAM
+
+    /* Heap section */
+    .heap (NOLOAD) :
+    {
+        _heap_start = .;
+        . += 0x10; /* Adjust the size as needed */
+        _heap_end = .;
+    } > RAM
 }
+
+/* Define symbols for memory initialization */
+PROVIDE(_start = 0x00010000);
+PROVIDE(_etext = _etext);
+PROVIDE(_sdata = _sdata);
+PROVIDE(_edata = _edata);
+PROVIDE(_sbss = _sbss);
+PROVIDE(_ebss = _ebss);
+PROVIDE(_sstack = _sstack);
+PROVIDE(_estack = _estack);
