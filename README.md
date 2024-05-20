@@ -16,6 +16,7 @@ The board used in this project is a [Tang Nano 9K](https://wiki.sipeed.com/hardw
 * `make clean` to clean build files.
 * `gtkwave build/waveform_*.vcd` to view waveform of corresponding testbench.
 * `make rom` to compile source files in prog/src, link and generate rom file.
+* `make objdump` to disassemble rom file.
 * `make wave` to view waveform of cpu running build/rom.hex.
 
 ## Tools
@@ -48,7 +49,7 @@ The board used in this project is a [Tang Nano 9K](https://wiki.sipeed.com/hardw
 * I-type: addi, andi, ori, xori, slti, sltiu, slli, srli, srai, lw
 * S-type: sw
 * B-type: beq, bne, blt, bge, bltu, bgeu
-* U-type:
+* U-type: lui, auipc
 * J-type: jal, jalr
 
 ## Resources
@@ -59,7 +60,13 @@ The board used in this project is a [Tang Nano 9K](https://wiki.sipeed.com/hardw
 * [Operating Systems: Three Easy Pieces by Remzi and Andrea Arpaci-Dusseau](https://pages.cs.wisc.edu/~remzi/OSTEP/)
 * [Example RISCV Cores](https://github.com/yunchenlo/awesome-RISCV-Cores)
 
-
+## Design
+### Microarchitecture
+![Microarchitecture](res/microarchitecture.jpg)
+### Control Unit FSM
+![Control Unit FSM](res/control_unit_fsm.jpg)
+### Memory Layout
+![Memory Layout](res/memory_layout.jpg)
 ## Waveform Example
 
 Here we can see the waveforms of various internal signal of the CPU, executing the following instructions:

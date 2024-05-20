@@ -1,39 +1,35 @@
-extern unsigned int _sidata; /* Start address for the .data section in ROM */
-extern unsigned int _sdata;  /* Start address for the .data section in RAM */
-extern unsigned int _edata;  /* End address for the .data section in RAM */
-extern unsigned int _sbss;   /* Start address for the .bss section */
-extern unsigned int _ebss;   /* End address for the .bss section */
-extern unsigned int _estack; /* End address for the stack section */
+extern unsigned int _sidata; // start of .data section in ROM
+extern unsigned int _sdata;  // start of .data section in RAM
+extern unsigned int _edata;  // end   of .data section in RAM
+extern unsigned int _sbss;   // start of .bss section
+extern unsigned int _ebss;   // end   of .bss section
+extern unsigned int _estack; // end   of .stack section (stack top)
 
-void main(void);             /* The main function declaration */
-void _start(void) __attribute__((section(".text.startup"), naked)); /* The entry point */
+void main(void); // main function declaration
+
+void _start(void) __attribute__((section(".text.startup"), naked)); // entry point, cpu starts executing from here
 
 void _start(void)
 {
-    unsigned int *src, *dest;
+  unsigned int *src, *dst;
 
-    /* Copy .data section from ROM to RAM */
-    src = &_sidata;  /* ROM address of the .data section */
-    for (dest = &_sdata; dest < &_edata;)
-    {
-        *dest++ = *src++;
-    }
+  // copy .data section from ROM to RAM
+  src = &_sidata;
+  for (dst = &_sdata; dst < &_edata;) {
+    *dst++ = *src++;
+  }
 
-    //while(1);
+  // zero initialize .bss section
+  for (dst = &_sbss; dst < &_ebss;) {
+    *dst++ = 0;
+  }
 
-    /* Zero initialize .bss section */
-    for (dest = &_sbss; dest < &_ebss;)
-    {
-        *dest++ = 0;
-    }
+  // initialize stack pointer
+  asm volatile ("la sp, _estack");
 
+  // call main function
+  main();
 
-    /* Initialize stack pointer */
-    asm volatile ("la sp, _estack");
-
-    /* Call the main function */
-    main();
-
-    /* If main returns, loop forever */
-    while (1);
+  // halt
+  while (1);
 }
