@@ -1,7 +1,8 @@
 module cpu (
   input clk,
   input rstn,
-  output [31:0] dbg_t6
+  input [31:0] io_in,
+  output [31:0] io_out
 );
 
 
@@ -80,7 +81,9 @@ memory_interface memory_interface (
   .we(mem_we),
   .addr(mem_addr),
   .rd(mem_rd),
-  .wd(rd2_buf)
+  .wd(rd2_buf),
+  .io_in(io_in),
+  .io_out(io_out)
 );
 
 instruction_reg instruction_reg (
@@ -115,8 +118,7 @@ register_file register_file (
   .wa3(wa3),
   .rd1(rd1),
   .rd2(rd2),
-  .wd3(result),
-  .dbg_t6(dbg_t6)
+  .wd3(result)
 );
 
 register_file_reg register_file_reg (

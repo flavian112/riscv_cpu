@@ -1,22 +1,22 @@
 [*]
 [*] GTKWave Analyzer v3.4.0 (w)1999-2022 BSI
-[*] Wed May 15 06:26:49 2024
+[*] Wed May 15 13:30:34 2024
 [*]
 [dumpfile] "/Users/flavian/Documents/hobbies/electronics/projects/riscv_cpu/build/waveform_cpu.vcd"
-[dumpfile_mtime] "Wed May 15 06:25:06 2024"
-[dumpfile_size] 6805714
+[dumpfile_mtime] "Wed May 15 07:27:23 2024"
+[dumpfile_size] 6990688
 [savefile] "/Users/flavian/Documents/hobbies/electronics/projects/riscv_cpu/debug/cpu.gtkw"
-[timestart] 36861700
-[size] 1512 945
+[timestart] 2404400
+[size] 760 916
 [pos] -1 -1
-*-15.000000 59800 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+*-15.000000 2445000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] testbench_register_file.
 [treeopen] testbench_register_file.cpu.
 [treeopen] testbench_register_file.cpu.control_unit.
-[sst_width] 253
-[signals_width] 390
-[sst_expanded] 1
-[sst_vpaned_height] 288
+[sst_width] 39
+[signals_width] 202
+[sst_expanded] 0
+[sst_vpaned_height] 278
 @28
 testbench_register_file.clk
 testbench_register_file.rst
@@ -29,7 +29,7 @@ testbench_register_file.clk_cycle_count[31:0]
 testbench_register_file.cpu.control_unit.state[3:0]
 @28
 testbench_register_file.cpu.instr_we
-@22
+@23
 testbench_register_file.cpu.instr[31:0]
 @28
 testbench_register_file.cpu.control_unit.opcode[6:0]
@@ -51,9 +51,7 @@ testbench_register_file.cpu.pc_we
 -
 @22
 testbench_register_file.cpu.mem_addr[31:0]
-@23
 testbench_register_file.cpu.mem_rd[31:0]
-@22
 testbench_register_file.cpu.rd2_buf[31:0]
 @28
 testbench_register_file.cpu.mem_we

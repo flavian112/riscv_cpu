@@ -5,10 +5,14 @@ module testbench_register_file();
 reg clk;
 reg rst;
 
+reg [31:0] io_in;
+wire [31:0] io_out;
+
 cpu cpu (
   .clk(clk),
   .rstn(!rst),
-  .dbg_t6(_)
+  .io_in(io_in),
+  .io_out(io_out)
 );
 
 integer file, r, eof;

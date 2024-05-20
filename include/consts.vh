@@ -118,3 +118,22 @@ parameter PC_UPDATE_ENABLE  = 1'b1;
 parameter PC_UPDATE_DISABLE = 1'b0;
 parameter BRANCH_ENABLE     = 1'b1;
 parameter BRANCH_DISABLE    = 1'b0;
+
+parameter IO_BEGIN  = 32'h0000_0000;
+parameter IO_END    = 32'h0000_FFFF;
+parameter ROM_BEGIN = 32'h0001_0000;
+parameter ROM_END   = 32'h000F_FFFF;
+parameter RAM_BEGIN = 32'h0010_0000;
+parameter RAM_END   = 32'hFF0F_FFFF;
+
+// 0000 0000 Reserved
+// 0000 FFFF
+//
+// 0001 0000 ROM
+// 000F FFFF
+//
+// 0010 0000 RAM
+// FF0F FFFF
+//
+// FF10 0000 Reserved
+// FFFF FFFF

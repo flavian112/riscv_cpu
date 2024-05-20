@@ -6,7 +6,9 @@ module top (
 
 wire rstn, clk_cpu;
 assign rstn = key;
-wire [31:0] dbg_t6;
+
+wire [31:0] io_in;
+wire [31:0] io_out;
 
 clock_divider #(.N(1024 * 1024)) clkdiv (
     .clk(clk),
@@ -15,13 +17,14 @@ clock_divider #(.N(1024 * 1024)) clkdiv (
 );
 
 assign led[0] = ~clk_cpu;
-assign led[5:1] = ~dbg_t6[4:0];
+assign led[5:1] = ~io_out[4:0];
 
 
 cpu cpu (
   .clk(clk_cpu),
   .rstn(rstn),
-  .dbg_t6(dbg_t6)
+  .io_in(io_in),
+  .io_out(io_out)
 );
 
 endmodule

@@ -6,11 +6,17 @@ module memory_interface (
   input [31:0] addr,
   input [31:0] wd,
 
-  output reg [31:0] rd
+  output reg [31:0] rd,
+
+  input [31:0] io_in,
+  output [31:0] io_out
 );
 
+`include "include/consts.vh"
+
 reg ram_we;
-wire [31:0] ram_read_data, rom_read_data;
+reg io_we;
+wire [31:0] ram_rd, rom_rd;
 reg [31:0] rel_addr;
 
 ram #(.N(32), .SIZE(1024)) ram(
@@ -18,14 +24,25 @@ ram #(.N(32), .SIZE(1024)) ram(
   .rstn(rstn),
   .we(ram_we),
   .addr(rel_addr),
-  .data_read(ram_read_data),
+  .data_read(ram_rd),
   .data_write(wd)
 );
 
 rom #(.N(32), .SIZE(1024)) rom(
   .clk(clk),
   .addr(rel_addr),
-  .data_read(rom_read_data)
+  .data_read(rom_rd)
+);
+
+io io(
+  .clk(clk),
+  .rstn(rstn),
+  .we(io_we),
+  .addr(rel_addr),
+  .rd(io_rd),
+  .wd(wd),
+  .io_in(io_in),
+  .io_out(io_out)
 );
 
 
@@ -42,17 +59,23 @@ rom #(.N(32), .SIZE(1024)) rom(
 // FFFF FFFF
 
 
-always @(*) begin
-  if (         addr >= 32'h0001_0000 && addr <= 32'h000F_0000) begin
-    ram_we = 0;
-    rd = rom_read_data;
-    rel_addr = addr - 32'h0001_0000;
-  end else if (addr >= 32'h0010_0000 && addr <= 32'hFF0F_0000) begin
+always @ (*) begin
+  rd       = 0;
+  rel_addr = 0;
+  ram_we   = 0;
+  io_we    = 0;
+  if (         addr >= ROM_BEGIN && addr <= ROM_END) begin
+    rd = rom_rd;
+    rel_addr = addr - ROM_BEGIN;
+  end else if (addr >= RAM_BEGIN && addr <= RAM_END) begin
     ram_we = we;
-    rd = ram_read_data;
-    rel_addr = addr - 32'h0010_0000;
+    rd = ram_rd;
+    rel_addr = addr - RAM_BEGIN;
+  end else if (addr >= IO_BEGIN && addr <= IO_END) begin
+    io_we = we;
+    rd = io_rd;
+    rel_addr = addr - IO_BEGIN;
   end else begin
-    ram_we = 0;
     rd = 0;
     rel_addr = 0;
   end

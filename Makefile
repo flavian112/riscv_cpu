@@ -31,7 +31,7 @@ VVP = vvp
 GTKWAVE = gtkwave
 
 YOSYS = yosys
-NEXTPNR = nextpnr-gowin
+NEXTPNR = nextpnr-himbaechel
 GOWIN_PACK = gowin_pack
 PROGRAMMER = openFPGALoader
 
@@ -79,7 +79,7 @@ $(BUILD_DIR)/$(PRJ_NAME)_pnr.json: $(BUILD_DIR)/$(PRJ_NAME).json $(CST_FILES)
 	@echo "==================================================="
 	@echo " Routing"
 	@echo "==================================================="
-	$(NEXTPNR) --json $(BUILD_DIR)/$(PRJ_NAME).json --write $(BUILD_DIR)/$(PRJ_NAME)_pnr.json --device $(DEVICE) --family $(FAMILY) --cst $(CST_FILES)
+	$(NEXTPNR) --json $(BUILD_DIR)/$(PRJ_NAME).json --write $(BUILD_DIR)/$(PRJ_NAME)_pnr.json --device $(DEVICE) --vopt family=$(FAMILY) --vopt cst=$(CST_FILES)
 	@echo "==================================================="
 	@echo " Completed Routing"	
 	@echo "==================================================="
