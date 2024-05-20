@@ -62,7 +62,7 @@ The board used in this project is a [Tang Nano 9K](https://wiki.sipeed.com/hardw
 
 ## Design
 ### Microarchitecture
-![Microarchitecture](res/microarchitecture.jpg)
+![Microarchitecture](res/microarchitecure.jpg)
 ### Control Unit FSM
 ![Control Unit FSM](res/control_unit_fsm.jpg)
 ### Memory Layout
