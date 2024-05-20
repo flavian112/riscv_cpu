@@ -1,6 +1,23 @@
 .section .init
 .globl _start
 _start:
+
+prog:
+/*
+    la t0, 4
+    la t1, 1
+
+    sw t1, 0(t0)
+
+    la t0, 0x00100000
+    li t1, 1
+    sw t1, 0(t0)
+    lw t2, 0(t0)
+
+    
+    j halt
+
+*/
     /* Set up stack pointer */
     la sp, _stack_end
 

@@ -10,7 +10,7 @@ assign rstn = key;
 wire [31:0] io_in;
 wire [31:0] io_out;
 
-clock_divider #(.N(1024 * 1024)) clkdiv (
+clock_divider #(.N(1)) clkdiv (
     .clk(clk),
     .rstn(rstn),
     .clk_div(clk_cpu)

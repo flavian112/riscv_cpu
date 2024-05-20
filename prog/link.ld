@@ -3,8 +3,8 @@
 /* Define memory regions */
 MEMORY
 {
-    ROM (rx)  : ORIGIN = 0x00010000, LENGTH = 0x400  /* 1024 bytes for ROM */
-    RAM (rwx) : ORIGIN = 0x00100000, LENGTH = 0x400  /* 1024 bytes for RAM */
+    ROM (rx)  : ORIGIN = 0x00010000, LENGTH = 0x1000  /* 1024 bytes for ROM */
+    RAM (rwx) : ORIGIN = 0x00100000, LENGTH = 0x1000  /* 1024 bytes for RAM */
 }
 
 ENTRY(_start)
@@ -43,7 +43,7 @@ SECTIONS
     .stack (NOLOAD) :
     {
         _stack_start = .;
-        . += 0x80; /* Adjust the size as needed */
+        . += 0x100; /* Adjust the size as needed */
         _stack_end = .;
     } > RAM
 
@@ -51,7 +51,7 @@ SECTIONS
     .heap (NOLOAD) :
     {
         _heap_start = .;
-        . += 0x80; /* Adjust the size as needed */
+        . += 0x100; /* Adjust the size as needed */
         _heap_end = .;
     } > RAM
 }

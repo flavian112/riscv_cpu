@@ -14,15 +14,17 @@ module io (
 
 `include "include/consts.vh"
 
-always @ (posedge clk) begin
+always @ (posedge clk or negedge rstn) begin
   if (!rstn) begin
     io_out <= 32'b0;
   end else if (we && addr == 32'h0000_0004) begin
     io_out <= wd;
   end
+end
+
+always @ (posedge clk) begin
   if      (addr == 32'h0000_0000) rd <= io_in;
   else if (addr == 32'h0000_0004) rd <= io_out;
   else                            rd <= 32'b0;
 end
-
 endmodule
