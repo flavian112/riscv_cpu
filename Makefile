@@ -45,6 +45,7 @@ RISCV_AS = $(RISCV_TOOLCHAIN)-as
 RISCV_CC = $(RISCV_TOOLCHAIN)-gcc
 RISCV_LD = $(RISCV_TOOLCHAIN)-ld
 RISCV_OBJCOPY = $(RISCV_TOOLCHAIN)-objcopy
+RISCV_OBJDUMP = $(RISCV_TOOLCHAIN)-objdump
 
 RISCV_ASFLAGS = -march=rv32i -mabi=ilp32
 RISCV_CFLAGS = -march=rv32i -mabi=ilp32
@@ -159,9 +160,12 @@ $(BUILD_DIR):
 wave:
 	$(GTKWAVE) -a debug/cpu.gtkw $(BUILD_DIR)/waveform_cpu.vcd
 
+objdump: $(PROG_ELF_FILE)
+	$(RISCV_OBJDUMP) -d -x --disassembler-color=on $(PROG_ELF_FILE)
+
 # Clean
 clean:
 	rm -rf $(BUILD_DIR)
 
-.PHONY: all simulate rom bitsream upload flash wave clean
+.PHONY: all simulate rom bitsream upload flash wave objdump clean
 

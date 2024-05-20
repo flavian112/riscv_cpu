@@ -126,14 +126,4 @@ parameter ROM_END   = 32'h000F_FFFF;
 parameter RAM_BEGIN = 32'h0010_0000;
 parameter RAM_END   = 32'hFF0F_FFFF;
 
-// 0000 0000 Reserved
-// 0000 FFFF
-//
-// 0001 0000 ROM
-// 000F FFFF
-//
-// 0010 0000 RAM
-// FF0F FFFF
-//
-// FF10 0000 Reserved
-// FFFF FFFF
+parameter PC_INITIAL = 32'h0001_0000;

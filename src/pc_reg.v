@@ -8,7 +8,7 @@ module pc_reg (
   output reg [31:0] pc
 );
 
-parameter PC_INITIAL = 32'h0001_0000;
+`include "include/consts.vh"
 
 always @ (posedge clk or negedge rstn) begin
   if (!rstn) pc <= PC_INITIAL;

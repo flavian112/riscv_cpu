@@ -1,67 +1,79 @@
-/* Linker script for RISC-V */
-
-/* Define memory regions */
 MEMORY
 {
-    ROM (rx)  : ORIGIN = 0x00010000, LENGTH = 0x1000  /* 1024 bytes for ROM */
-    RAM (rwx) : ORIGIN = 0x00100000, LENGTH = 0x1000  /* 1024 bytes for RAM */
+  ROM (rx)  : ORIGIN = 0x00010000, LENGTH = 4K
+  RAM (rwx) : ORIGIN = 0x00100000, LENGTH = 4K
 }
 
 ENTRY(_start)
 
-/* Define sections */
 SECTIONS
 {
-    /* Code section */
-    .text :
-    {
-        KEEP(*(.init))
-        KEEP(*(.text))
-        KEEP(*(.fini))
-        KEEP(*(.rodata))
-        _etext = .;
-    } > ROM
+  .text :
+  {
+    _stext = .;
+    . = ORIGIN(ROM);
+    _start = .;       /* Entry point address */
+    KEEP(*(.text.startup)) /* Ensure startup code is kept */
+    *(.text)          /* .text sections (code) */
+    *(.text.*)
+    . = ALIGN(4);
+    _etext = .;       /* End of code section, needed for copying .data */
+  } > ROM
 
-    /* Initialized data section */
-    .data : AT(_etext)
-    {
-        _sdata = .;
-        KEEP(*(.data))
-        _edata = .;
-    } > RAM
+  .rodata :
+  {
+    *(.rodata)               /* Read-only data */
+    *(.rodata.*)
+  } > ROM
 
-    /* Uninitialized data section */
-    .bss :
-    {
-        _sbss = .;
-        KEEP(*(.bss))
-        KEEP(*(COMMON))
-        _ebss = .;
-    } > RAM
+  .data : 
+  {
+    _sidata = LOADADDR(.data); /* Start address of .data section in ROM */
+    . = ALIGN(4);
+    _sdata = .;       /* Start of .data section in RAM */
+    *(.data)          /* .data sections (initialized data) */
+    *(.data.*)
+    *(.sdata)                  /* .sdata sections (small initialized data) */
+    *(.sdata.*)
+    . = ALIGN(4);
+    _edata = .;       /* End of .data section in RAM */
+  } > RAM AT > ROM
 
-    /* Stack section */
-    .stack (NOLOAD) :
-    {
-        _stack_start = .;
-        . += 0x100; /* Adjust the size as needed */
-        _stack_end = .;
-    } > RAM
+  .bss :
+  {
+    . = ALIGN(4);
+    _sbss = .;        /* Start of .bss section */
+    *(.bss)           /* .bss sections (zero-initialized data) */
+    *(.bss.*)
+    *(.sbss)                   /* .sbss sections (small zero-initialized data) */
+    *(.sbss.*)
+    *(COMMON)
+    . = ALIGN(4);
+    _ebss = .;        /* End of .bss section */
+  } > RAM
 
-    /* Heap section */
-    .heap (NOLOAD) :
-    {
-        _heap_start = .;
-        . += 0x100; /* Adjust the size as needed */
-        _heap_end = .;
-    } > RAM
+  .heap (NOLOAD) :
+  {
+    . = ALIGN(4);
+    _sheap = .;       /* Start of heap */
+    . = . + 1K;       /* Size of heap (adjust as needed) */
+    _eheap = .;       /* End of heap */
+    . = ALIGN(4);
+  } > RAM
+
+  .stack (NOLOAD) :
+  {
+    . = ALIGN(4);
+    _sstack = .;      /* Start of stack */
+    . = . + 1K;       /* Size of stack (adjust as needed) */
+    _estack = .;      /* End of stack */
+    . = ALIGN(4);
+  } > RAM
+
+  /DISCARD/ : 
+  {
+    *(.comment)
+    *(.note)
+    *(.note.*)
+  }
 }
-
-/* Define symbols for memory initialization */
-PROVIDE(_start = 0x00010000);
-PROVIDE(_etext = _etext);
-PROVIDE(_sdata = _sdata);
-PROVIDE(_edata = _edata);
-PROVIDE(_sbss = _sbss);
-PROVIDE(_ebss = _ebss);
-PROVIDE(_sstack = _sstack);
-PROVIDE(_estack = _estack);
