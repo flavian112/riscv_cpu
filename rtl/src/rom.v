@@ -1,6 +1,7 @@
 module rom #(
   parameter N = 32, 
-  parameter SIZE = 1024
+  parameter SIZE = 1024,
+  parameter ROM_FILE = "../../build/rom.hex"
 )(
     input clk,
     input [N-1:0] addr,
@@ -14,7 +15,7 @@ module rom #(
 reg [N-1:0] mem [0:SIZE-1];
 
 initial begin
-  $readmemh("build/rom.hex", mem, 0, SIZE-1);
+  $readmemh(ROM_FILE, mem, 0, SIZE-1);
 end
 
 always @(negedge clk) begin

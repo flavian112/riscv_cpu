@@ -12,15 +12,45 @@ The board used in this project is a [Tang Nano 9K](https://wiki.sipeed.com/hardw
 ## Build
 
 * `make all` alias for `make simulate`.
-* `make simulate` to run all the testbenches (sim/testbench_*.v).
-* `make bitstream` to synthesize, place and route the design and to generate the bitstream.
-* `make upload` to upload the bitstream to the FPGA.
-* `make flash` to flash the bitsream to the FPGA.
-* `make clean` to clean build files.
-* `gtkwave build/waveform_*.vcd` to view waveform of corresponding testbench.
-* `make rom` to compile source files in prog/src, link and generate rom file.
-* `make objdump` to disassemble rom file.
-* `make wave` to view waveform of cpu running build/rom.hex.
+* `make rom` to build rom.
+* `make objdump` to disassemble rom.
+* `make size` to display size information of rom.
+* `make testvec` to generate testvectors.
+* `make simulate` to run testbenches.
+* `make wave` to view waveform of cpu testbench in gtkwave.
+* `make bitstream` to generate bitstream.
+* `make upload` to upload bitstream to fpga.
+* `make flash` to flash bitstream to fpga.
+* `make clean` to clean build folder.
+
+## Project Structure
+
+```(txt)
+riscv_cpu
+  |-> build         # build folder
+  |-> debug
+    |-> cpu.gtkw    # template for gtkwave
+  |-> prog
+    |-> include
+    |-> src
+    |-> link.ld
+    |-> Makefile
+  |-> res           # various resources
+  |-> rtl           # rtl sources (verilog files)
+    |-> cst         # constraints file for fpga
+    |-> include
+    |-> src
+    |-> Makefile
+  |-> sim
+    |-> gentestvec  # generate testvectors for testbenches
+      |-> src
+      |-> Makefile
+    |-> testbenches # testbench sources
+      |-> src
+      |-> Makefile
+  |-> Makefile
+  |-> README.md
+```
 
 ## Tools
 

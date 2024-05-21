@@ -28,7 +28,7 @@ ram #(.N(32), .SIZE(1024)) ram(
   .data_write(wd)
 );
 
-rom #(.N(32), .SIZE(1024)) rom(
+rom #(.N(32), .SIZE(1024), .ROM_FILE("../../build/rom.hex")) rom(
   .clk(clk),
   .addr(rel_addr),
   .data_read(rom_rd)

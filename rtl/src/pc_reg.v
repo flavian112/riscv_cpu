@@ -11,7 +11,7 @@ module pc_reg (
 `include "include/consts.vh"
 
 always @ (posedge clk or negedge rstn) begin
-  if (!rstn) pc <= PC_INITIAL;
+  if (!rstn)   pc <= PC_INITIAL;
   else if (we) pc <= pc_in;
 end
 
