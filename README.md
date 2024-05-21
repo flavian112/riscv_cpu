@@ -1,6 +1,9 @@
 # RISCV CPU
 
-An attempt at building a simple RISCV CPU in verilog.
+An attempt at building a simple RISCV CPU in verilog. Currently my CPU
+implements the RV32I ISA without FENCE/ECALL/EBREAK instructions. The design
+is very much based on David and Sarah Harris' book 
+"Digital Design and Computer Architecture (RISC-V Edition)".
 
 ## FPGA
 
@@ -34,14 +37,14 @@ The board used in this project is a [Tang Nano 9K](https://wiki.sipeed.com/hardw
 ### Synthesis
 
 * [yosys](https://github.com/YosysHQ/oss-cad-suite-build) for synthesis
-* [nextpnr-gowin](https://github.com/YosysHQ/apicula) for place and route
+* [nextpnr-himbaechel](https://github.com/YosysHQ/apicula) for place and route
 * [gowin_pack](https://github.com/YosysHQ/apicula) for generating bitstream
 * [openFPGALoader](https://github.com/trabucayre/openFPGALoader) for uploading bitstream to FPGA
 
 ### Debugging
 
 * [gtkwave](https://github.com/gtkwave/gtkwave) for viewing waveforms
-* [openocd](https://openocd.org) for debugging
+* ([openocd](https://openocd.org) for debugging)
 
 ## Currently Supported Instructions
 
