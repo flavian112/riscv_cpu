@@ -77,6 +77,10 @@ The board used in this project is a [Tang Nano 9K](https://wiki.sipeed.com/hardw
 
 ![Memory Layout](res/memory_layout.jpg)
 
+### ALU
+
+![ALU](res/alu.jpg)
+
 ## Waveform Example
 
 Here we can see the waveforms of various internal signal of the CPU, executing the following instructions:
