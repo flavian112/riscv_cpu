@@ -90,8 +90,8 @@ Here we can see the waveforms of various internal signal of the CPU, executing t
 
 ### RV32I ISA
 
-![RV32I ISA Table](res/riscv_isa_registers_table.jpg)
+![RV32I ISA Table](res/riscv_isa_rv32i_table.jpg)
 
 ### Registers
 
-![RV32 Register Table](res/riscv_isa_rv32i_table.jpg)
+![RV32 Register Table](res/riscv_isa_registers_table.jpg)
