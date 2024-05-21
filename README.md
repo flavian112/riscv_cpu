@@ -61,12 +61,19 @@ The board used in this project is a [Tang Nano 9K](https://wiki.sipeed.com/hardw
 * [Example RISCV Cores](https://github.com/yunchenlo/awesome-RISCV-Cores)
 
 ## Design
-### Microarchitecture
+
+### Microarchitecture (RISC-V multicycle rv32i without ECALL/EBREAK)
+
 ![Microarchitecture](res/microarchitecure.jpg)
+
 ### Control Unit FSM
+
 ![Control Unit FSM](res/control_unit_fsm.jpg)
+
 ### Memory Layout
+
 ![Memory Layout](res/memory_layout.jpg)
+
 ## Waveform Example
 
 Here we can see the waveforms of various internal signal of the CPU, executing the following instructions:

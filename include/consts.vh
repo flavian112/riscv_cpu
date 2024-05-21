@@ -1,16 +1,16 @@
 parameter ALU_A_SRC_PC      = 3'b000;
 parameter ALU_A_SRC_PC_BUF  = 3'b001;
-parameter ALU_A_SRC_RD1_BUF = 3'b010;
-parameter ALU_A_SRC_RD1     = 3'b011;
+parameter ALU_A_SRC_RD1     = 3'b010;
+parameter ALU_A_SRC_RD1_BUF = 3'b011;
 parameter ALU_A_SRC_0       = 3'b100;
 
 parameter ALU_B_SRC_RD2_BUF = 2'b00;
 parameter ALU_B_SRC_IMM     = 2'b01;
 parameter ALU_B_SRC_4       = 2'b10;
 
-parameter RESULT_SRC_ALU_RESULT_BUF = 2'b00;
-parameter RESULT_SRC_DATA_BUF       = 2'b01;
-parameter RESULT_SRC_ALU_RESULT     = 2'b10;
+parameter RESULT_SRC_ALU_RESULT     = 2'b00;
+parameter RESULT_SRC_ALU_RESULT_BUF = 2'b01;
+parameter RESULT_SRC_DATA_BUF       = 2'b10;
 
 parameter MEM_ADDR_SRC_PC     = 1'b0;
 parameter MEM_ADDR_SRC_RESULT = 1'b1;

@@ -162,8 +162,8 @@ alu_result_reg alu_result_reg (
 );
 
 result_mux result_mux (
-  .src_alu_result_buf(alu_result_buf),
   .src_alu_result(alu_result),
+  .src_alu_result_buf(alu_result_buf),
   .src_data_buf(data_buf),
   .result_src(result_src),
   .result(result)
