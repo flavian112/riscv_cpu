@@ -7,10 +7,14 @@ extern unsigned int _estack; // end   of .stack section (stack top)
 
 void main(void); // main function declaration
 
+// extern void test_prog(void);
+
 void _start(void) __attribute__((section(".text.startup"), naked)); // entry point, cpu starts executing from here
 
 void _start(void)
 {
+  // test_prog();
+
   unsigned int *src, *dst;
 
   // copy .data section from ROM to RAM

@@ -1,17 +1,6 @@
 .section .text
 .globl test_prog
 
-
-/*
-  addi t0, zero, 31
-reset_loop:
-  addi t6, zero, 0
-loop:
-  addi t6, t6, 1
-  beq t6, t0, reset_loop
-  j loop
-*/
-
 test_prog:
   li t0, 0xFFFFFFFF
   li t1, 0x33333333
@@ -44,11 +33,11 @@ branch_eq_ret:
   j branch_ne_nt
 
 branch_ne_ret:
-  addi sp, sp, -16  # Adjust stack pointer to make space for ra and s0
-  sw ra, 0(sp)      # Save ra to the stack
+  addi sp, sp, -16
+  sw ra, 0(sp)
   call func
-  lw ra, 0(sp)      # Load ra from the stack
-  addi sp, sp, 16   # Restore stack pointer
+  lw ra, 0(sp)
+  addi sp, sp, 16
 
   li  t0, 0x00100000 
   sw  t1, 0(t0)

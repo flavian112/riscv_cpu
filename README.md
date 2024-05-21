@@ -30,7 +30,7 @@ riscv_cpu
   |-> build         # build folder
   |-> debug
     |-> cpu.gtkw    # template for gtkwave
-  |-> prog
+  |-> prog          # program that gets compiled to run on cpu
     |-> include
     |-> src
     |-> link.ld
@@ -42,7 +42,7 @@ riscv_cpu
     |-> src
     |-> Makefile
   |-> sim
-    |-> gentestvec  # generate testvectors for testbenches
+    |-> gentestvec  # programs to generate testvectors for testbenches
       |-> src
       |-> Makefile
     |-> testbenches # testbench sources
