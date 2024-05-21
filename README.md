@@ -62,7 +62,7 @@ The board used in this project is a [Tang Nano 9K](https://wiki.sipeed.com/hardw
 
 ## Design
 
-### Microarchitecture (RISC-V multicycle rv32i without ECALL/EBREAK)
+### Microarchitecture (RISC-V multicycle rv32i without FENCE/ECALL/EBREAK)
 
 ![Microarchitecture](res/microarchitecure.jpg)
 
@@ -85,3 +85,13 @@ Here we can see the waveforms of various internal signal of the CPU, executing t
 ```
 
 ![Waveform adding two numbers](res/waveform_add_two_numbers.png)
+
+## RISC-V
+
+### RV32I ISA
+
+![RV32I ISA Table](res/riscv_isa_registers_table.jpg)
+
+### Registers
+
+![RV32 Register Table](res/riscv_isa_rv32i_table.jpg)
