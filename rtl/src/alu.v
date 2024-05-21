@@ -1,3 +1,7 @@
+// alu:
+// Computes result based on operands a, b and the provided operation.
+// The signal zero is high if result is zero.
+
 module alu (
   input [31:0] a, 
   input [31:0] b,

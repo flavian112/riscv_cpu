@@ -1,3 +1,6 @@
+// register file reg:
+// Stores outputs of register file for one more clock cycle.
+
 module register_file_reg (
   input clk, 
   input rstn,

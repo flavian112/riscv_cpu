@@ -1,3 +1,6 @@
+// arithmetic unit:
+// Arithmetic part of the alu.
+
 module arithmetic_unit (
   input [31:0] a, 
   input [31:0] b,

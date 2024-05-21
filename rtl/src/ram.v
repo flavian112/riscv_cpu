@@ -1,3 +1,6 @@
+// ram:
+// Contains data section of program and is used for stack/heap, etc.
+
 module ram #(
   parameter N = 32, 
   parameter SIZE = 1024

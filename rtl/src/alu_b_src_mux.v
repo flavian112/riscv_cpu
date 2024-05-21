@@ -1,3 +1,6 @@
+// alu src_b mux:
+// Selects source for alu input b.
+
 module alu_b_src_mux (
   input [31:0] src_rd2_buf,
   input [31:0] src_imm,

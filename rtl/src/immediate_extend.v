@@ -1,3 +1,6 @@
+// immediate extend:
+// Extracts immediate value from various instruction formats.
+
 module immediate_extend (
   input [31:0] instr,
   input [2:0] imm_src,

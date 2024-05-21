@@ -1,33 +1,41 @@
+// source selection alu a_src mux 
 parameter ALU_A_SRC_PC      = 3'b000;
 parameter ALU_A_SRC_PC_BUF  = 3'b001;
 parameter ALU_A_SRC_RD1     = 3'b010;
 parameter ALU_A_SRC_RD1_BUF = 3'b011;
 parameter ALU_A_SRC_0       = 3'b100;
 
+// source selection alu b_src mux
 parameter ALU_B_SRC_RD2_BUF = 2'b00;
 parameter ALU_B_SRC_IMM     = 2'b01;
 parameter ALU_B_SRC_4       = 2'b10;
 
+// source selection result mux
 parameter RESULT_SRC_ALU_RESULT     = 2'b00;
 parameter RESULT_SRC_ALU_RESULT_BUF = 2'b01;
 parameter RESULT_SRC_DATA_BUF       = 2'b10;
 
+// source selection mem addr mux
 parameter MEM_ADDR_SRC_PC     = 1'b0;
 parameter MEM_ADDR_SRC_RESULT = 1'b1;
 
+// arithmetic op
 parameter ARITHMETIC_OP_ADD  = 2'b00;
 parameter ARITHMETIC_OP_SUB  = 2'b01;
 parameter ARITHMETIC_OP_SLT  = 2'b10;
 parameter ARITHMETIC_OP_SLTU = 2'b11;
 
+// logic op
 parameter LOGIC_OP_AND = 2'b00;
 parameter LOGIC_OP_OR  = 2'b01;
 parameter LOGIC_OP_XOR = 2'b10;
 
+// shift op
 parameter SHIFT_OP_SLL = 2'b00;
 parameter SHIFT_OP_SRL = 2'b01;
 parameter SHIFT_OP_SRA = 2'b11;
 
+// alu op
 parameter ALU_OP_ARITHMETIC = 2'b00;
 parameter ALU_OP_LOGIC      = 2'b01;
 parameter ALU_OP_SHIFT      = 2'b10;
@@ -43,6 +51,7 @@ parameter ALU_OP_SLL  = { ALU_OP_SHIFT, SHIFT_OP_SLL };
 parameter ALU_OP_SRL  = { ALU_OP_SHIFT, SHIFT_OP_SRL };
 parameter ALU_OP_SRA  = { ALU_OP_SHIFT, SHIFT_OP_SRA };
 
+// control unit fsm states
 parameter STATE_FETCH     = 4'h0;
 parameter STATE_DECODE    = 4'h1;
 parameter STATE_MEM_ADDR  = 4'h2;
@@ -58,6 +67,7 @@ parameter STATE_ALU_WB    = 4'hb;
 parameter STATE_AUIPC     = 4'hc;
 parameter STATE_BRANCH    = 4'hd;
 
+// instruction formats
 parameter INSTR_FORMAT_UNKNOWN = 3'b000;
 parameter INSTR_FORMAT_R       = 3'b001;
 parameter INSTR_FORMAT_I       = 3'b010;
@@ -66,6 +76,7 @@ parameter INSTR_FORMAT_B       = 3'b100;
 parameter INSTR_FORMAT_U       = 3'b101;
 parameter INSTR_FORMAT_J       = 3'b110;
 
+// instruction opcodes
 parameter OPCODE_LUI    = 7'b0110111;
 parameter OPCODE_AUIPC  = 7'b0010111;
 parameter OPCODE_JAL    = 7'b1101111;
@@ -78,6 +89,7 @@ parameter OPCODE_REG    = 7'b0110011;
 parameter OPCODE_SYNC   = 7'b0001111;
 parameter OPCODE_SYS    = 7'b1110011;
 
+// instruction funct3
 parameter FUNCT3_LS_B  = 3'b000;
 parameter FUNCT3_LS_H  = 3'b001;
 parameter FUNCT3_LS_W  = 3'b010;
@@ -100,14 +112,17 @@ parameter FUNCT3_BRANCH_BGE  = 3'b101;
 parameter FUNCT3_BRANCH_BLTU = 3'b110;
 parameter FUNCT3_BRANCH_BGEU = 3'b111;
 
+// instruction funct7
 parameter FUNCT7_ALU_ADD = 7'b0000000;
 parameter FUNCT7_ALU_SUB = 7'b0100000;
 parameter FUNCT7_ALU_SRL = 7'b0000000;
 parameter FUNCT7_ALU_SRA = 7'b0100000;
 
+// alu control
 parameter ALU_CTRL_OP  = 1'b0;
 parameter ALU_CTRL_ADD = 1'b1;
 
+// control unit control signal values
 parameter MEM_WE_ENABLE     = 1'b1;
 parameter MEM_WE_DISABLE    = 1'b0;
 parameter RF_WE_ENABLE      = 1'b1;
@@ -119,6 +134,7 @@ parameter PC_UPDATE_DISABLE = 1'b0;
 parameter BRANCH_ENABLE     = 1'b1;
 parameter BRANCH_DISABLE    = 1'b0;
 
+// memory layout
 parameter IO_BEGIN  = 32'h0000_0000;
 parameter IO_END    = 32'h0000_FFFF;
 parameter ROM_BEGIN = 32'h0001_0000;
@@ -126,4 +142,5 @@ parameter ROM_END   = 32'h000F_FFFF;
 parameter RAM_BEGIN = 32'h0010_0000;
 parameter RAM_END   = 32'hFF0F_FFFF;
 
+// entry point
 parameter PC_INITIAL = 32'h0001_0000;

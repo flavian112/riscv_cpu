@@ -1,3 +1,6 @@
+// memory interface:
+// Connects rom, ram and io to memory bus.
+
 module memory_interface (
   input clk,
   input rstn,

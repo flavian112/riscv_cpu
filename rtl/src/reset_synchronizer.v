@@ -1,3 +1,8 @@
+// reset synchronizer:
+// Is used too ensure that the deassertion of the reset signal 
+// is synchronized with the clock. If the reset signal is deasserted 
+// asynchronously with respect to the clock, it can cause metastability issues.
+
 module reset_synchronizer (
     input clk,
     input rstn_async,

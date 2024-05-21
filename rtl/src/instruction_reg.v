@@ -1,3 +1,6 @@
+// instruction reg:
+// Stores current instruction (and pc) until next one gets fetched.
+
 module instruction_reg (
   input clk, 
   input rstn, 

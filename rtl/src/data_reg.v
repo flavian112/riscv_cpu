@@ -1,3 +1,6 @@
+// data reg:
+// Stores output of memory unit for one more cycle.
+
 module data_reg (
   input clk,
   input rstn,

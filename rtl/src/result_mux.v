@@ -1,3 +1,6 @@
+// result mux:
+// Selects source for result.
+
 module result_mux (
   input [31:0] src_alu_result,
   input [31:0] src_alu_result_buf,

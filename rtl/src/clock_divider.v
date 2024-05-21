@@ -1,3 +1,7 @@
+// clock divider:
+// This is used to scale the input clock signal by a certain amount, which then feeds into the cpu,
+// to decrease its frequency, useful for debugging for example.
+
 module clock_divider #( 
   parameter N = 2
 )(

@@ -1,3 +1,7 @@
+// control unit:
+// This is a fsm that controls various signals of the cpu and
+// manages its state.
+
 module control_unit (
  input clk, 
  input rstn,
@@ -41,9 +45,10 @@ assign ra1 = instr[19:15];
 assign ra2 = instr[24:20];
 assign wa3 = instr[11:7];
 
+// controls if pc gets updated
+// funct3[0] is 0 for BEQ, BLT, BLTU and 1 for BNE, BGE, BGEU
+// funct3[2] is 0 for BEQ, BNE       and 1 for BLT, BLTU, BGE, BGEU
 assign pc_we = ((alu_zero ^ funct3[0] ^ funct3[2]) & branch) | pc_update;
-
-reg [3:0] state, next_state;
 
 alu_op_decode alu_op_decode (
   .opcode(opcode),
@@ -70,11 +75,15 @@ always @ (*) begin
   endcase
 end
 
+// state register
+reg [3:0] state, next_state;
+
 always @ (posedge clk or negedge rstn) begin
   if (!rstn) state <= STATE_FETCH;
   else state <= next_state;
 end
 
+// next state logic
 always @ (*) begin
   case(state)
     STATE_FETCH:     next_state = STATE_DECODE;
@@ -111,7 +120,7 @@ always @ (*) begin
 end
 
 
-
+// output/control logic
 always @ (*) begin
   mem_addr_src = MEM_ADDR_SRC_RESULT;
   alu_a_src    = ALU_A_SRC_RD1_BUF;

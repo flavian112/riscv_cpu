@@ -1,6 +1,6 @@
 `timescale 1ns / 1ps
 
-module testbench_register_file();
+module testbench_cpu();
 
 reg clk;
 reg rst;
@@ -41,7 +41,7 @@ end
   
 initial begin
   $dumpfile(waveform_filename);
-  $dumpvars(0,testbench_register_file);
+  $dumpvars(0,testbench_cpu);
 end
 
 

@@ -1,3 +1,6 @@
+// register file:
+// Registers of the cpu.
+
 module register_file (
   input clk, 
   input rstn, 

@@ -1,3 +1,6 @@
+// pc reg:
+// Stores current pc.
+
 module pc_reg (
   input clk, 
   input rstn,

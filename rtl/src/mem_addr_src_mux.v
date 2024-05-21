@@ -1,3 +1,6 @@
+// mem addr mux:
+// Selects source mem addr.
+
 module mem_addr_src_mux (
   input [31:0] src_pc, 
   input [31:0] src_result,

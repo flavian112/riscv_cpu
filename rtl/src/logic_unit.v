@@ -1,3 +1,6 @@
+// logic unit:
+// Logic part of alu.
+
 module logic_unit (
   input [31:0] a, 
   input [31:0] b,

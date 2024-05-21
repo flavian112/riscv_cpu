@@ -1,3 +1,6 @@
+// top:
+// Top module, maps signals to fpga.
+
 module top (
 	input clk,
 	input key,

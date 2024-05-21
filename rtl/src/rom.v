@@ -1,3 +1,6 @@
+// rom:
+// Contains instructions of program.
+
 module rom #(
   parameter N = 32, 
   parameter SIZE = 1024,

@@ -1,3 +1,6 @@
+// shift unit:
+// Shift part of alu.
+
 module shift_unit (
   input signed [31:0] a,
   input  [4:0] b,

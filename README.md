@@ -92,6 +92,7 @@ riscv_cpu
 * [Computer Organization and Design by David Patterson](https://shop.elsevier.com/books/computer-organization-and-design-risc-v-edition/patterson/978-0-12-820331-6)
 * [Operating Systems: Three Easy Pieces by Remzi and Andrea Arpaci-Dusseau](https://pages.cs.wisc.edu/~remzi/OSTEP/)
 * [Example RISCV Cores](https://github.com/yunchenlo/awesome-RISCV-Cores)
+* [godbolt (compiler explorer)](https://godbolt.org)
 
 ## Design
 

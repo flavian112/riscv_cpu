@@ -1,3 +1,6 @@
+// io:
+// Input and output register, connected to pins of fpga.
+
 module io (
   input clk,
   input rstn,

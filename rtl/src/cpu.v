@@ -1,3 +1,6 @@
+// cpu:
+// Connects the various bit and pieces together.
+
 module cpu (
   input clk,
   input rstn,
