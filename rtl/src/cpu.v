@@ -80,7 +80,7 @@ mem_addr_src_mux mem_addr_src_mux (
 );
 
 memory_interface memory_interface (
-  .clk(clk),
+  .clk(~clk),
   .rstn(rstn),
   .we(mem_we),
   .addr(mem_addr),
