@@ -3,26 +3,26 @@
 // manages its state.
 
 module control_unit (
- input clk, 
- input rstn,
+ input            clk, 
+ input            rstn,
 
- input [31:0] instr,
- input alu_zero,
+ input     [31:0] instr,
+ input            alu_zero,
 
  output reg [2:0] imm_src,
- output pc_we,
+ output           pc_we,
 
- output reg mem_addr_src,
- output reg mem_we,
+ output reg       mem_addr_src,
+ output reg       mem_we,
 
- output reg instr_we,
+ output reg       instr_we,
 
- output reg rf_we,
- output [4:0] ra1, ra2, wa3,
+ output reg       rf_we,
+ output     [4:0] ra1, ra2, wa3,
 
  output reg [2:0] alu_a_src,
  output reg [1:0] alu_b_src,
- output [3:0] alu_op,
+ output     [3:0] alu_op,
 
  output reg [1:0] result_src
 );
@@ -80,7 +80,7 @@ reg [3:0] state, next_state;
 
 always @ (posedge clk or negedge rstn) begin
   if (!rstn) state <= STATE_FETCH;
-  else state <= next_state;
+  else       state <= next_state;
 end
 
 // next state logic
@@ -122,16 +122,16 @@ end
 
 // output/control logic
 always @ (*) begin
-  mem_addr_src = MEM_ADDR_SRC_RESULT;
-  alu_a_src    = ALU_A_SRC_RD1_BUF;
-  alu_b_src    = ALU_B_SRC_RD2_BUF;
-  alu_ctrl     = ALU_CTRL_OP;
-  result_src   = RESULT_SRC_ALU_RESULT;
-  mem_we       = MEM_WE_DISABLE;
-  rf_we        = RF_WE_DISABLE;
-  instr_we     = INSTR_WE_DISABLE;
-  pc_update    = PC_UPDATE_DISABLE;
-  branch       = BRANCH_DISABLE;
+  mem_addr_src     = MEM_ADDR_SRC_RESULT;
+  alu_a_src        = ALU_A_SRC_RD1_BUF;
+  alu_b_src        = ALU_B_SRC_RD2_BUF;
+  alu_ctrl         = ALU_CTRL_OP;
+  result_src       = RESULT_SRC_ALU_RESULT;
+  mem_we           = MEM_WE_DISABLE;
+  rf_we            = RF_WE_DISABLE;
+  instr_we         = INSTR_WE_DISABLE;
+  pc_update        = PC_UPDATE_DISABLE;
+  branch           = BRANCH_DISABLE;
   case(state)
     STATE_FETCH: begin
       mem_addr_src = MEM_ADDR_SRC_PC;

@@ -2,43 +2,42 @@
 // Connects the various bit and pieces together.
 
 module cpu (
-  input clk,
-  input rstn,
-  input [31:0] io_in,
+  input         clk,
+  input         rstn,
+  input  [31:0] io_in,
   output [31:0] io_out
 );
 
-
 wire [31:0] pc, pc_buf;
-wire pc_we;
+wire        pc_we;
 
 wire [31:0] mem_addr;
-wire mem_addr_src;
+wire        mem_addr_src;
 wire [31:0] mem_rd;
-wire mem_we;
+wire        mem_we;
 
-wire instr_we;
+wire        instr_we;
 wire [31:0] instr;
 
 wire [31:0] imm;
-wire [2:0] imm_src;
+wire  [2:0] imm_src;
 
 wire [31:0] data_buf;
 
-wire rf_we;
-wire [4:0] ra1, ra2, wa3;
+wire        rf_we;
+wire  [4:0] ra1, ra2, wa3;
 wire [31:0] rd1, rd2;
 wire [31:0] rd1_buf, rd2_buf;
 
 wire [31:0] alu_a, alu_b;
-wire [2:0] alu_a_src;
-wire [1:0] alu_b_src;
-wire [3:0] alu_op;
+wire  [2:0] alu_a_src;
+wire  [1:0] alu_b_src;
+wire  [3:0] alu_op;
 wire [31:0] alu_result;
-wire alu_zero;
+wire        alu_zero;
 wire [31:0] alu_result_buf;
 
-wire [1:0] result_src;
+wire  [1:0] result_src;
 wire [31:0] result;
 
 

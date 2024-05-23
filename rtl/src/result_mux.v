@@ -2,11 +2,11 @@
 // Selects source for result.
 
 module result_mux (
-  input [31:0] src_alu_result,
-  input [31:0] src_alu_result_buf,
-  input [31:0] src_data_buf,
+  input      [31:0] src_alu_result,
+  input      [31:0] src_alu_result_buf,
+  input      [31:0] src_data_buf,
 
-  input [1:0] result_src,
+  input       [1:0] result_src,
   
   output reg [31:0] result
 );

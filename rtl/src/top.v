@@ -2,14 +2,13 @@
 // Top module, maps signals to fpga.
 
 module top (
-	input clk,
-	input key,
-  input rst,
+	input        clk,
+  input        s1, s2,
   output [5:0] led
 );
 
-wire rstn, rstn_async, clk_cpu;
-assign rstn_async = rst;
+wire   rstn, rstn_async, clk_cpu;
+assign rstn_async = s1;
 
 wire [31:0] io_in;
 wire [31:0] io_out;
@@ -28,7 +27,7 @@ clock_divider #(.N(1)) clkdiv (
 
 assign led[0] = ~clk_cpu;
 assign led[5:1] = ~io_out[4:0];
-assign io_in[0] = key;
+assign io_in[0] = ~s2;
 
 
 cpu cpu (

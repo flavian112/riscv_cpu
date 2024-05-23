@@ -2,16 +2,16 @@
 // Input and output register, connected to pins of fpga.
 
 module io (
-  input clk,
-  input rstn,
+  input             clk,
+  input             rstn,
 
-  input we,
-  input [31:0] addr,
-  input [31:0] wd,
+  input             we,
+  input      [31:0] addr,
+  input      [31:0] wd,
 
   output reg [31:0] rd,
 
-  input [31:0] io_in,
+  input      [31:0] io_in,
   output reg [31:0] io_out
 );
 

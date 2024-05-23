@@ -2,11 +2,11 @@
 // Stores current instruction (and pc) until next one gets fetched.
 
 module instruction_reg (
-  input clk, 
-  input rstn, 
+  input             clk, 
+  input             rstn, 
   
-  input we,
-  input [31:0] pc_in, instr_in,
+  input             we,
+  input      [31:0] pc_in, instr_in,
   output reg [31:0] pc_buf, instr
 );
 

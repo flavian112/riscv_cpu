@@ -2,11 +2,11 @@
 // Stores outputs of register file for one more clock cycle.
 
 module register_file_reg (
-  input clk, 
-  input rstn,
+  input             clk, 
+  input             rstn,
 
-  input [31:0] rd1_in, 
-  input [31:0] rd2_in,
+  input      [31:0] rd1_in, 
+  input      [31:0] rd2_in,
   
   output reg [31:0] rd1_buf,
   output reg [31:0] rd2_buf

@@ -2,12 +2,12 @@
 // Selects source for alu input a.
 
 module alu_a_src_mux (
-  input [31:0] src_pc, 
-  input [31:0] src_pc_buf,
-  input [31:0] src_rd1,
-  input [31:0] src_rd1_buf,
+  input      [31:0] src_pc, 
+  input      [31:0] src_pc_buf,
+  input      [31:0] src_rd1,
+  input      [31:0] src_rd1_buf,
 
-  input [2:0] alu_a_src,
+  input       [2:0] alu_a_src,
 
   output reg [31:0] alu_a
 );

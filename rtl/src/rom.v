@@ -2,27 +2,27 @@
 // Contains instructions of program.
 
 module rom #(
-  parameter N = 32, 
-  parameter SIZE = 1024,
-  parameter ROM_FILE = "../../build/rom.hex"
+  parameter           SIZE = 1024,
+  parameter           ROM_FILE = "../../build/rom.hex"
 )(
-    input clk,
-    input [N-1:0] addr,
-    output reg [N-1:0] data_read
+    input             clk,
+    input      [31:0] addr,
+    output reg [31:0] rd
 );
 
-`include "include/log2.vh"
+`include "include/consts.vh"
+
 
 
 //(* RAM_STYLE="BLOCK" *)
-reg [N-1:0] mem [0:SIZE-1];
+reg [31:0] mem [0:SIZE-1];
 
 initial begin
   $readmemh(ROM_FILE, mem, 0, SIZE-1);
 end
 
-always @(negedge clk) begin
-  data_read <= mem[addr >> 2];
+always @ (negedge clk) begin
+    rd <= mem[addr >> 2];
 end
 
 endmodule

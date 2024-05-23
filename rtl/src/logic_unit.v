@@ -2,10 +2,10 @@
 // Logic part of alu.
 
 module logic_unit (
-  input [31:0] a, 
-  input [31:0] b,
+  input      [31:0] a, 
+  input      [31:0] b,
 
-  input [1:0] op,
+  input       [1:0] op,
   
   output reg [31:0] result
 );

@@ -5,11 +5,11 @@
 // the next address of the pc.
 
 module alu_op_decode (
-  input [6:0] opcode,
-  input [2:0] funct3,
-  input [6:0] funct7,
+  input      [6:0] opcode,
+  input      [2:0] funct3,
+  input      [6:0] funct7,
   
-  input alu_ctrl,
+  input            alu_ctrl,
   
   output reg [3:0] alu_op
 );
@@ -18,7 +18,7 @@ module alu_op_decode (
 
 always @ (*) begin
   if (alu_ctrl == ALU_CTRL_ADD) begin
-    alu_op = ALU_OP_ADD;
+                          alu_op = ALU_OP_ADD;
   end else if (opcode == OPCODE_REG || opcode == OPCODE_IMM) begin // instruction is of r-type or i-type
     case (funct3)
       FUNCT3_ALU_ADD_SUB: alu_op = (opcode == OPCODE_REG && funct7 == FUNCT7_ALU_SUB) ? ALU_OP_SUB : ALU_OP_ADD;
@@ -45,7 +45,7 @@ always @ (*) begin
       default:            alu_op = ALU_OP_ADD;
     endcase
   end else begin
-    alu_op = ALU_OP_ADD;
+                          alu_op = ALU_OP_ADD;
   end
 end
 

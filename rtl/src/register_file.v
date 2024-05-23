@@ -2,15 +2,15 @@
 // Registers of the cpu.
 
 module register_file (
-  input clk, 
-  input rstn, 
+  input         clk, 
+  input         rstn, 
   
-  input we,
-  input [4:0] ra1, 
-  input [4:0] ra2, 
-  input [4:0] wa3,
+  input         we,
+  input   [4:0] ra1, 
+  input   [4:0] ra2, 
+  input   [4:0] wa3,
 
-  input [31:0] wd3,
+  input  [31:0] wd3,
 
   output [31:0] rd1, 
   output [31:0] rd2

@@ -4,8 +4,8 @@
 // asynchronously with respect to the clock, it can cause metastability issues.
 
 module reset_synchronizer (
-    input clk,
-    input rstn_async,
+    input  clk,
+    input  rstn_async,
     output rstn
 );
 

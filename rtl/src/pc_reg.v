@@ -2,11 +2,11 @@
 // Stores current pc.
 
 module pc_reg (
-  input clk, 
-  input rstn,
+  input             clk, 
+  input             rstn,
 
-  input we,
-  input [31:0] pc_in,
+  input             we,
+  input      [31:0] pc_in,
 
   output reg [31:0] pc
 );

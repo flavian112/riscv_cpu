@@ -3,13 +3,13 @@
 // The signal zero is high if result is zero.
 
 module alu (
-  input [31:0] a, 
-  input [31:0] b,
+  input      [31:0] a, 
+  input      [31:0] b,
 
-  input [3:0] op,
+  input       [3:0] op,
   
   output reg [31:0] result,
-  output zero
+  output            zero
 );
 
 wire [31:0] arithmetic_result, logic_result, shift_result;

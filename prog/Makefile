@@ -53,7 +53,7 @@ $(BUILD_DIR):
 
 # create objdump of elf file and print
 objdump: $(ELF_FILE)
-	$(RISCV_OBJDUMP) -d -x --disassembler-color=on $(ELF_FILE)
+	$(RISCV_OBJDUMP) -D -x -s --disassembler-color=on $(ELF_FILE)
 
 # display size information of elf file
 size: $(ELF_FILE)
