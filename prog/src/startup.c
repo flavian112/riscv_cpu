@@ -5,15 +5,15 @@ extern unsigned int _sbss;   // start of .bss section
 extern unsigned int _ebss;   // end   of .bss section
 extern unsigned int _estack; // end   of .stack section (stack top)
 
-void main(void); // main function declaration
+//void main(void); // main function declaration
 
-// extern void test_prog(void);
+extern void test_prog(void);
 
 void _start(void) __attribute__((section(".text.startup"), naked)); // entry point, cpu starts executing from here
 
 void _start(void)
 {
-  // test_prog();
+  //test_prog();
 
   unsigned int *src, *dst;
 

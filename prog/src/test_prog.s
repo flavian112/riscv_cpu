@@ -2,6 +2,15 @@
 .globl test_prog
 
 test_prog:
+
+  la t0, 0x00100000
+  li t1, 0x00ff0000
+
+  sw t1, 0(t0)
+  la t0, 0x00100002
+  lb t2, 0(t0)
+
+
   li t0, 0xFFFFFFFF
   li t1, 0x33333333
   li t2, 0x88888888
