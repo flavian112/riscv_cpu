@@ -7,6 +7,7 @@ module io (
 
   input             we,
   input      [31:0] addr,
+  input       [2:0] size,
   input      [31:0] wd,
 
   output reg [31:0] rd,

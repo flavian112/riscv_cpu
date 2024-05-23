@@ -8,6 +8,7 @@ module memory_interface (
   input             we,
   input      [31:0] addr,
   input      [31:0] wd,
+  input       [2:0] size,
 
   output reg [31:0] rd,
 
@@ -27,6 +28,7 @@ ram #(.SIZE(1024)) ram (
   .rstn(rstn),
   .we(ram_we),
   .addr(rel_addr),
+  .size(size),
   .rd(ram_rd),
   .wd(wd)
 );
@@ -34,6 +36,7 @@ ram #(.SIZE(1024)) ram (
 rom #(.SIZE(1024)) rom (
   .clk(clk),
   .addr(rel_addr),
+  .size(size),
   .rd(rom_rd)
 );
 
@@ -42,6 +45,7 @@ io io (
   .rstn(rstn),
   .we(io_we),
   .addr(rel_addr),
+  .size(size),
   .rd(io_rd),
   .wd(wd),
   .io_in(io_in),

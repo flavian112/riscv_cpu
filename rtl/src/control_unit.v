@@ -14,6 +14,7 @@ module control_unit (
 
  output reg       mem_addr_src,
  output reg       mem_we,
+ output reg [2:0] mem_size,
 
  output reg       instr_we,
 
@@ -132,6 +133,7 @@ always @ (*) begin
   instr_we         = INSTR_WE_DISABLE;
   pc_update        = PC_UPDATE_DISABLE;
   branch           = BRANCH_DISABLE;
+  mem_size         = FUNCT3_LS_W;
   case(state)
     STATE_FETCH: begin
       mem_addr_src = MEM_ADDR_SRC_PC;
@@ -155,6 +157,7 @@ always @ (*) begin
     STATE_MEM_LOAD: begin
       mem_addr_src = MEM_ADDR_SRC_RESULT;
       result_src   = RESULT_SRC_ALU_RESULT_BUF;
+      mem_size     = funct3;
     end
     STATE_MEM_WB: begin
       result_src   = RESULT_SRC_DATA_BUF;
@@ -164,6 +167,7 @@ always @ (*) begin
       mem_addr_src = MEM_ADDR_SRC_RESULT;
       result_src   = RESULT_SRC_ALU_RESULT_BUF;
       mem_we       = MEM_WE_ENABLE;
+      mem_size     = funct3;
     end
     STATE_EXECUTE_R: begin
       alu_a_src    = ALU_A_SRC_RD1_BUF;

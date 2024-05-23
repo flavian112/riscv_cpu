@@ -15,6 +15,7 @@ wire [31:0] mem_addr;
 wire        mem_addr_src;
 wire [31:0] mem_rd;
 wire        mem_we;
+wire  [2:0] mem_size;
 
 wire        instr_we;
 wire [31:0] instr;
@@ -50,6 +51,7 @@ control_unit control_unit (
   .pc_we(pc_we),
   .mem_addr_src(mem_addr_src),
   .mem_we(mem_we),
+  .mem_size(mem_size),
   .instr_we(instr_we),
   .result_src(result_src),
   .alu_op(alu_op),
@@ -82,6 +84,7 @@ memory_interface memory_interface (
   .rstn(rstn),
   .we(mem_we),
   .addr(mem_addr),
+  .size(mem_size),
   .rd(mem_rd),
   .wd(rd2_buf),
   .io_in(io_in),
