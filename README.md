@@ -79,8 +79,8 @@ riscv_cpu
 ## Currently Supported Instructions
 
 * R-type: add, sub, and, or, xor, sll, srl, sra, slt, sltu
-* I-type: addi, andi, ori, xori, slti, sltiu, slli, srli, srai, lw
-* S-type: sw
+* I-type: addi, andi, ori, xori, slti, sltiu, slli, srli, srai, lw, lh, lhu, lb, lbu
+* S-type: sw, sh, sb
 * B-type: beq, bne, blt, bge, bltu, bgeu
 * U-type: lui, auipc
 * J-type: jal, jalr
