@@ -2,7 +2,7 @@
 
 An attempt at building a simple RISCV CPU in verilog. Currently my CPU
 implements the RV32I ISA without FENCE/ECALL/EBREAK instructions. The design
-is very much based on David and Sarah Harris' book 
+is very much based on David and Sarah Harris' book
 "Digital Design and Computer Architecture (RISC-V Edition)".
 
 ## FPGA
@@ -94,6 +94,7 @@ riscv_cpu
 * [Operating Systems: Three Easy Pieces by Remzi and Andrea Arpaci-Dusseau](https://pages.cs.wisc.edu/~remzi/OSTEP/)
 * [Example RISCV Cores](https://github.com/yunchenlo/awesome-RISCV-Cores)
 * [godbolt (compiler explorer)](https://godbolt.org)
+* [DDCA Notes](https://github.com/flavian112/ethz_ddca)
 
 ## Design
 

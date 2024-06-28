@@ -5,15 +5,16 @@ extern unsigned int _sbss;   // start of .bss section
 extern unsigned int _ebss;   // end   of .bss section
 extern unsigned int _estack; // end   of .stack section (stack top)
 
-//void main(void); // main function declaration
+extern void main(void); // main function declaration
 
 extern void test_prog(void);
 
-void _start(void) __attribute__((section(".text.startup"), naked)); // entry point, cpu starts executing from here
-
 void _start(void)
-{
-  //test_prog();
+    __attribute__((section(".text.startup"),
+                   naked)); // entry point, cpu starts executing from here
+
+void _start(void) {
+  // test_prog();
 
   unsigned int *src, *dst;
 
@@ -29,11 +30,12 @@ void _start(void)
   }
 
   // initialize stack pointer
-  asm volatile ("la sp, _estack");
+  asm volatile("la sp, _estack");
 
   // call main function
   main();
 
   // halt
-  while (1);
+  while (1)
+    ;
 }

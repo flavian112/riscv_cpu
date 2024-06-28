@@ -18,8 +18,6 @@ module rom #(
 //(* RAM_STYLE="BLOCK" *)
 reg [31:0] mem [0:SIZE-1];
 
-reg [7:0] mem0, mem1, mem2, mem3;
-
 reg [31:0] rd_reg;
 reg [31:0] addr_reg;
 
